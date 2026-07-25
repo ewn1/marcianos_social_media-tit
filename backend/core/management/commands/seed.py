@@ -1,3 +1,4 @@
+import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from core.models import Profile, Tit
@@ -8,6 +9,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         self.stdout.write("Semeando o banco de dados do True is Tough...")
+
+        admin_password = os.environ.get(
+            "SEED_ADMIN_PASSWORD", "TrueAdmin@2026!ChangeMe"
+        )
 
         ### O poder da criação para o usuário oficial do "True Admin"
         admin_user, created = User.objects.get_or_create(
@@ -20,12 +25,16 @@ class Command(BaseCommand):
         )
 
         if created:
-            admin_user.set_password("Lds1436606")
+            admin_user.set_password(admin_password)
             admin_user.save()
             self.stdout.write(
-                self.style.SUCCESS(
-                    "Usuário @codefather criado com sucesso! (Senha: Lds1436606)"
-                )
+                self.style.SUCCESS("Usuário @codefather criado com sucesso!")
+            )
+        else:
+            admin_user.set_password(admin_password)
+            admin_user.save()
+            self.stdout.write(
+                self.style.SUCCESS("Senha do @codefather atualizada com sucesso!")
             )
 
         ### configuração do meu perfil
