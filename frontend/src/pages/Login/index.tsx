@@ -1,4 +1,4 @@
-import { useState, SubmitEvent } from 'react'
+import { useState, useEffect, SyntheticEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import {
@@ -19,17 +19,23 @@ export function Login() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { login } = useAuth()
+  const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: SubmitEvent) => {
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true })
+    }
+  }, [isAuthenticated, navigate])
+
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
     setError('')
     setIsSubmitting(true)
 
     try {
       await login({ username, password })
-      navigate('/')
+      navigate('/', { replace: true })
     } catch (err) {
       setError('Usuário ou senha inválidos. Tente novamente.')
     } finally {

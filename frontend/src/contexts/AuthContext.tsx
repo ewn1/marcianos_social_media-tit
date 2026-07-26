@@ -23,19 +23,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Ao carregar a aplicação, verifica se existe um token salvo
   useEffect(() => {
     async function loadStoredData() {
       const storedToken = localStorage.getItem('accessToken')
 
       if (storedToken) {
         try {
-          // Busca o perfil do usuário logado na API
-          const response = await api.get<Profile>('users/me/')
+          const response = await api.get<Profile>('profiles/me/')
           setProfile(response.data)
-          setUser(response.data.user)
+          setUser(response.data.user || (response.data as unknown as User))
         } catch (error) {
-          // catch para limpar o local storage caso o token tenha expirado ou seja inválido.
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
         }
@@ -47,7 +44,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loadStoredData()
   }, [])
 
-  // Função para fazer Login
   const login = async (credentials: Record<string, string>) => {
     const response = await api.post<AuthTokens>('token/', credentials)
     const { access, refresh } = response.data
@@ -55,20 +51,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('accessToken', access)
     localStorage.setItem('refreshToken', refresh)
 
-    // Busca o perfil assim que autenticar
-    const profileResponse = await api.get<Profile>('users/me/')
+    const profileResponse = await api.get<Profile>('profiles/me/')
+
     setProfile(profileResponse.data)
-    setUser(profileResponse.data.user)
+    setUser(profileResponse.data.user || (profileResponse.data as unknown as User))
   }
 
-  // Função para cadastrar novo usuário.
   const register = async (userData: Record<string, string>) => {
     await api.post('register/', userData)
-    // Faz o login automático após cadastrar.
     await login({ username: userData.username, password: userData.password })
   }
 
-  // Função para deslogar.
   const logout = () => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
@@ -81,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         profile,
-        isAuthenticated: !!user,
+        isAuthenticated: !!profile || !!user,
         loading,
         login,
         register,
@@ -93,7 +86,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   )
 }
 
-// Hook criado para poder utilizar o AuthContext nos demais lugares do projeto.
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {

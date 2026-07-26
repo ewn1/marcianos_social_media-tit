@@ -8,12 +8,12 @@ import { AppRoutes } from './routes'
 export function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <GlobalStyle />
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
+          <GlobalStyle />
           <AppRoutes />
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeProvider>
   )
 }

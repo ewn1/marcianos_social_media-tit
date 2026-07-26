@@ -25,6 +25,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "user__username"
 
+    ### Action para retornar o perfil do usuário atualmente autenticado
+    @action(
+        detail=False,
+        methods=["get"],
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def me(self, request):
+        profile = request.user.profile
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
     @action(
         detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated]
     )
