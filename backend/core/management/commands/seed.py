@@ -5,7 +5,7 @@ from core.models import Profile, Tit
 
 
 class Command(BaseCommand):
-    help = "Popula o banco de dados com o perfil oficial do True Admin e Tits iniciais"
+    help = "Popula o banco de dados com o perfil oficial do True Admin e Tits iniciais do zero"
 
     def handle(self, *args, **kwargs):
         self.stdout.write("Semeando o banco de dados do True is Tough...")
@@ -14,7 +14,7 @@ class Command(BaseCommand):
             "SEED_ADMIN_PASSWORD", "TrueAdmin@2026!ChangeMe"
         )
 
-        ### O poder da criação para o usuário oficial do "True Admin"
+        ### 1. Garantir o meu usuário oficial @codefather
         admin_user, created = User.objects.get_or_create(
             username="codefather",
             defaults={
@@ -24,20 +24,19 @@ class Command(BaseCommand):
             },
         )
 
+        admin_user.set_password(admin_password)
+        admin_user.save()
+
         if created:
-            admin_user.set_password(admin_password)
-            admin_user.save()
             self.stdout.write(
                 self.style.SUCCESS("Usuário @codefather criado com sucesso!")
             )
         else:
-            admin_user.set_password(admin_password)
-            admin_user.save()
             self.stdout.write(
-                self.style.SUCCESS("Senha do @codefather atualizada com sucesso!")
+                self.style.SUCCESS("Senha e permissões do @codefather atualizadas!")
             )
 
-        ### configuração do meu perfil
+        ### 2. Configuração do perfil
         profile, _ = Profile.objects.get_or_create(user=admin_user)
         profile.display_name = "True Admin - The Codefather"
         profile.bio = (
@@ -45,7 +44,7 @@ class Command(BaseCommand):
         )
         profile.save()
 
-        ### Tits do Codefather, cheers!!
+        ### 3. Tits do Codefather
         initial_tits = [
             "Primeiro vai o arroz e depois o feijão por cima! Quem coloca o feijão por baixo nem é gente.",
             "Schrödinger inventou o Git sem saber: o seu código está funcionando e bugado ao mesmo tempo até você rodar o build em produção.",
@@ -63,12 +62,12 @@ class Command(BaseCommand):
             "Ada Lovelace: The Mother of All. Respeite quem inventou a lógica de programação!",
         ]
 
-        ### regra para criar os tits no banco de dados caso eles ainda não existam.
+        ### 4. Criação direta dos Tits para o meu perfil Codefather
         for content in initial_tits:
-            Tit.objects.get_or_create(author=admin_user, content=content)
+            Tit.objects.create(author=admin_user, content=content)
 
         self.stdout.write(
             self.style.SUCCESS(
-                "Seed executado com sucesso! O True Admin já está pronto para mitar."
+                f"Seed executado com sucesso! {len(initial_tits)} Tits criados do zero para o @codefather."
             )
         )

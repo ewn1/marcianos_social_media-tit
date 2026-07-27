@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.contrib.auth.models import User
 from .models import Profile, Tit, Like, Comment
 from .serializers import (
@@ -23,7 +24,20 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     lookup_field = "user__username"
+
+    def get_queryset(self):
+        queryset = Profile.objects.all()
+        search_query = self.request.query_params.get("search", None)
+
+        if search_query:
+            # Lógica para buscar o usuário pelo username ou display_name
+            queryset = queryset.filter(
+                user__username__icontains=search_query
+            ) | queryset.filter(display_name__icontains=search_query)
+
+        return queryset.distinct()
 
     ### Action para retornar o perfil do usuário atualmente autenticado
     @action(
@@ -54,21 +68,30 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if current_profile.following.filter(id=target_profile.id).exists():
             current_profile.following.remove(target_profile)
             return Response(
-                {"message": f"Você deixou de seguir @{target_profile.user.username}"}
+                {
+                    "message": f"Você deixou de seguir @{target_profile.user.username}",
+                    "is_following": False,
+                },
+                status=status.HTTP_200_OK,
             )
         else:
             current_profile.following.add(target_profile)
             return Response(
-                {"message": f"Você agora está seguindo @{target_profile.user.username}"}
+                {
+                    "message": f"Você agora está seguindo @{target_profile.user.username}",
+                    "is_following": True,
+                },
+                status=status.HTTP_200_OK,
             )
 
 
-### ViewSet dos tits (posts) e feed dinâmico
+### ViewSet dos tits com feed dinâmico
 class TitViewSet(viewsets.ModelViewSet):
     serializer_class = TitSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
+        # Lógica para mostrar somente os Tits de quem o usuário segue
         if (
             self.request.query_params.get("feed") == "true"
             and self.request.user.is_authenticated
@@ -76,10 +99,7 @@ class TitViewSet(viewsets.ModelViewSet):
             following_profiles = self.request.user.profile.following.all()
             following_users = User.objects.filter(profile__in=following_profiles)
 
-            return Tit.objects.filter(
-                author__in=following_users
-                | User.objects.filter(id=self.request.user.id)
-            )
+            return Tit.objects.filter(author__in=following_users)
 
         return Tit.objects.all()
 
