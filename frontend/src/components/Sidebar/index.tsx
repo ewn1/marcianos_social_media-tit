@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Home, User, LogOut } from 'lucide-react'
+import { Home, User, LogOut, Search } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import {
   Container,
@@ -13,7 +13,7 @@ import {
 } from './styles'
 
 export function Sidebar() {
-  const { user, profile, logout } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -34,8 +34,16 @@ export function Sidebar() {
           </NavItem>
 
           <NavItem
+            $active={location.pathname === '/explore'}
+            onClick={() => navigate('/explore')}
+          >
+            <Search size={24} />
+            <span>Explorar</span>
+          </NavItem>
+
+          <NavItem
             $active={location.pathname.startsWith('/profile')}
-            onClick={() => navigate('/profile/')}
+            onClick={() => navigate('/profile')}
           >
             <User size={24} />
             <span>Perfil</span>
