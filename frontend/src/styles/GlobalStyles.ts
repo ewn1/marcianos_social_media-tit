@@ -1,6 +1,12 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
+
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;

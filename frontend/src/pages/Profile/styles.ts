@@ -2,17 +2,21 @@ import styled from 'styled-components'
 
 export const LayoutContainer = styled.div`
   display: flex;
+  justify-content: center;
   min-height: 100vh;
   max-width: 1280px;
   margin: 0 auto;
+  width: 100%;
 `
 
 export const ProfileContainer = styled.main`
-  flex: 1;
-  max-width: 650px;
+  width: 100%;
+  max-width: 600px;
+  min-width: 320px;
   border-right: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
   border-left: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
   min-height: 100vh;
+  box-sizing: border-box;
 `
 
 export const Header = styled.header`

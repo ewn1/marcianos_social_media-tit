@@ -11,14 +11,22 @@ export function AppRoutes() {
       {/* Rotas públicas */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<ProfilePage />} />
 
-      {/* Rota protegida, feed principal */}
+      {/* Rotas protegidas */}
       <Route
         path="/"
         element={
           <PrivateRoute>
             <Home />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <ProfilePage />
           </PrivateRoute>
         }
       />

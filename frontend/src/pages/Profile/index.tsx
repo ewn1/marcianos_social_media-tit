@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent } from 'react'
+import { useState, useEffect, SyntheticEvent, ChangeEvent } from 'react'
 import { Sidebar } from '../../components/Sidebar'
 import api from '../../services/api'
 import { Profile, Tit } from '../../types'
@@ -33,6 +33,8 @@ export function ProfilePage() {
   // Formulário de edição
   const [displayName, setDisplayName] = useState('')
   const [bio, setBio] = useState('')
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
@@ -46,13 +48,20 @@ export function ProfilePage() {
 
         // Busca todos os Tits e filtra pelos Tits do usuário logado
         const titsResponse = await api.get('tits/')
-        const allTits: Tit[] = Array.isArray(titsResponse.data)
+        const allTits: any[] = Array.isArray(titsResponse.data)
           ? titsResponse.data
           : titsResponse.data.results || []
 
-        const myTits = allTits.filter(
-          (tit) => tit.author?.id === profileResponse.data.user?.id
-        )
+        // Filtra os Tits garantindo suporte a string ("codefather") ou objeto
+        const myTits = allTits.filter((tit) => {
+          const authorName =
+            typeof tit.author === 'string'
+              ? tit.author
+              : tit.author?.username || tit.author_profile?.username
+
+          return authorName === profileResponse.data.username
+        })
+
         setUserTits(myTits)
       } catch (error) {
         console.error('Erro ao carregar dados do perfil:', error)
@@ -64,6 +73,15 @@ export function ProfilePage() {
     loadProfileData()
   }, [])
 
+  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setAvatarFile(file)
+      // Cria preview local para feedback instantâneo ao usuário
+      setAvatarPreview(URL.createObjectURL(file))
+    }
+  }
+
   const handleSaveProfile = async (e: SyntheticEvent) => {
     e.preventDefault()
     if (!profile || isSaving) return
@@ -71,13 +89,28 @@ export function ProfilePage() {
     setIsSaving(true)
 
     try {
-      // Faz o PATCH para atualizar os dados no backend
-      const response = await api.patch<Profile>(`profiles/${profile.user.username}/`, {
-        display_name: displayName,
-        bio: bio,
-      })
+      // Envio multipart/form-data para suportar arquivos de imagem
+      const formData = new FormData()
+      formData.append('display_name', displayName)
+      formData.append('bio', bio)
+
+      if (avatarFile) {
+        formData.append('avatar', avatarFile)
+      }
+
+      const response = await api.patch<Profile>(
+        `profiles/${profile.username}/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
 
       setProfile(response.data)
+      setAvatarFile(null)
+      setAvatarPreview(null)
       setIsEditing(false)
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error)
@@ -91,7 +124,7 @@ export function ProfilePage() {
       <LayoutContainer>
         <Sidebar />
         <ProfileContainer>
-          <EmptyStateText>Carregando perfil do Marciano...</EmptyStateText>
+          <EmptyStateText>Carregando perfil...</EmptyStateText>
         </ProfileContainer>
       </LayoutContainer>
     )
@@ -102,26 +135,29 @@ export function ProfilePage() {
       <Sidebar />
       <ProfileContainer>
         <Header>
-          <h2>{profile?.display_name || profile?.user?.username}</h2>
+          <h2>{profile?.display_name || profile?.username}</h2>
         </Header>
 
         <ProfileHeader>
           <AvatarSection>
             <AvatarImage>
-              {profile?.avatar ? (
+              {avatarPreview ? (
+                <img src={avatarPreview} alt="Preview" />
+              ) : profile?.avatar ? (
                 <img src={profile.avatar} alt={profile.display_name} />
               ) : (
-                profile?.display_name?.[0] || 'M'
+                profile?.display_name?.[0] || 'Tit User'
               )}
             </AvatarImage>
+
             <EditProfileButton onClick={() => setIsEditing(!isEditing)}>
               {isEditing ? 'Cancelar' : 'Editar perfil'}
             </EditProfileButton>
           </AvatarSection>
 
           <UserInfo>
-            <h3>{profile?.display_name || 'Marciano sem nome'}</h3>
-            <span>@{profile?.user?.username}</span>
+            <h3>{profile?.display_name || 'sem nome ainda ;/'}</h3>
+            <span>@{profile?.username}</span>
             {profile?.bio && <p>{profile.bio}</p>}
 
             <StatsContainer>
@@ -137,17 +173,28 @@ export function ProfilePage() {
           {/* Form de Edição */}
           {isEditing && (
             <EditForm onSubmit={handleSaveProfile}>
+              <label style={{ fontSize: '0.85rem', color: '#71767b' }}>
+                Foto de perfil:
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+
               <input
                 type="text"
                 placeholder="Nome de exibição"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
               />
+
               <textarea
                 placeholder="Escreva sua bio marciana..."
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
+
               <SaveButton type="submit" disabled={isSaving}>
                 {isSaving ? 'Salvando...' : 'Salvar'}
               </SaveButton>
@@ -160,27 +207,40 @@ export function ProfilePage() {
           {userTits.length === 0 ? (
             <EmptyStateText>Você ainda não publicou nenhum Tit.</EmptyStateText>
           ) : (
-            userTits.map((tit) => (
-              <PostCard key={tit.id}>
-                <PostAvatar>
-                  {tit.author_profile?.avatar ? (
-                    <img
-                      src={tit.author_profile.avatar}
-                      alt={tit.author_profile.display_name}
-                    />
-                  ) : (
-                    <div>{tit.author_profile?.display_name?.[0] || 'M'}</div>
-                  )}
-                </PostAvatar>
-                <PostContent>
-                  <PostHeader>
-                    <strong>{tit.author_profile?.display_name || 'Marciano'}</strong>
-                    <span>@{tit.author_profile?.user?.username || 'marciano'}</span>
-                  </PostHeader>
-                  <PostBody>{tit.content}</PostBody>
-                </PostContent>
-              </PostCard>
-            ))
+            userTits.map((tit: any) => {
+              // Mapeamento dinâmico do nome e da imagem do autor
+              const authorName =
+                typeof tit.author === 'string'
+                  ? tit.author
+                  : tit.author_profile?.display_name ||
+                    tit.author?.username ||
+                    profile?.username ||
+                    'codefather'
+
+              const avatarUrl =
+                tit.author_avatar ||
+                tit.author_profile?.avatar ||
+                profile?.avatar
+
+              return (
+                <PostCard key={tit.id}>
+                  <PostAvatar>
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt={authorName} />
+                    ) : (
+                      <div>{authorName[0]?.toUpperCase() || 'C'}</div>
+                    )}
+                  </PostAvatar>
+                  <PostContent>
+                    <PostHeader>
+                      <strong>{authorName}</strong>
+                      <span>@{authorName}</span>
+                    </PostHeader>
+                    <PostBody>{tit.content}</PostBody>
+                  </PostContent>
+                </PostCard>
+              )
+            })
           )}
         </div>
       </ProfileContainer>

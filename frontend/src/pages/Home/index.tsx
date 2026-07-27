@@ -1,7 +1,7 @@
 import { useState, useEffect, SyntheticEvent } from 'react'
 import { Sidebar } from '../../components/Sidebar'
 import api from '../../services/api'
-import { Tit, Comment } from '../../types'
+import { Tit, Comment, Profile } from '../../types'
 import {
   LayoutContainer,
   FeedContainer,
@@ -26,6 +26,7 @@ import {
 export function Home() {
   const [content, setContent] = useState('')
   const [posts, setPosts] = useState<Tit[]>([])
+  const [currentUser, setCurrentUser] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -36,22 +37,29 @@ export function Home() {
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
 
   useEffect(() => {
-    async function fetchPosts() {
+    async function fetchData() {
       try {
-        const response = await api.get('tits/')
-        const titsData = Array.isArray(response.data)
-          ? response.data
-          : response.data.results || []
+        // Busca o perfil logado e apenas o feed de quem o usuário segue (?feed=true)
+        const [userResponse, titsResponse] = await Promise.all([
+          api.get<Profile>('profiles/me/'),
+          api.get('tits/?feed=true'),
+        ])
+
+        setCurrentUser(userResponse.data)
+
+        const titsData = Array.isArray(titsResponse.data)
+          ? titsResponse.data
+          : titsResponse.data.results || []
 
         setPosts(titsData)
       } catch (error) {
-        console.error('Erro ao buscar tits:', error)
+        console.error('Erro ao carregar dados da Home:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchPosts()
+    fetchData()
   }, [])
 
   const handlePublish = async (e: SyntheticEvent) => {
@@ -132,10 +140,21 @@ export function Home() {
         content: commentText,
       })
 
+      const commentData = response.data as any
+
+      const newComment = {
+        ...commentData,
+        author:
+          commentData.author ||
+          commentData.user?.username ||
+          currentUser?.username ||
+          'codefather',
+      }
+
       // Adiciona o comentário na lista do Tit
       setCommentsMap((prev) => ({
         ...prev,
-        [titId]: [...(prev[titId] || []), response.data],
+        [titId]: [...(prev[titId] || []), newComment],
       }))
 
       // Incrementa o contador de comentários no Tit
@@ -175,87 +194,112 @@ export function Home() {
         </CreateTitBox>
 
         {loading ? (
-          <EmptyStateText>Carregando Tits dos Marcianos...</EmptyStateText>
+          <EmptyStateText>Carregando Tit's...</EmptyStateText>
         ) : !Array.isArray(posts) || posts.length === 0 ? (
           <EmptyStateText>
-            Nenhum Tit publicado ainda. Seja o primeiro Marciano a comentar!
+            Nenhum Tit para visualizar. Siga outros titers para ver publicações aqui! 
+            @codefather é uma ótima sugestão para começar a seguir :D
           </EmptyStateText>
         ) : (
-          posts.map((post) => (
-            <PostCard key={post.id}>
-              <PostAvatar>
-                {post.author_profile?.avatar ? (
-                  <img
-                    src={post.author_profile.avatar}
-                    alt={post.author_profile.display_name}
-                  />
-                ) : (
-                  <div>{post.author_profile?.display_name?.[0] || 'M'}</div>
-                )}
-              </PostAvatar>
-              <PostContent>
-                <PostHeader>
-                  <strong>{post.author_profile?.display_name || 'Marciano'}</strong>
-                  <span>@{post.author_profile?.user?.username || 'marciano'}</span>
-                </PostHeader>
-                <PostBody>{post.content}</PostBody>
+          posts.map((post: any) => {
+            // Mapeamento dinâmico para dados do autor e avatar
+            const authorName =
+              typeof post.author === 'string'
+                ? post.author
+                : post.author_profile?.display_name ||
+                  post.author?.username ||
+                  currentUser?.username ||
+                  'codefather'
 
-                <PostFooter>
-                  <LikeButton
-                    $isLiked={post.is_liked}
-                    onClick={() => handleLike(post.id)}
-                  >
-                    <svg viewBox="0 0 24 24">
-                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                    </svg>
-                    <span>{post.likes_count || 0}</span>
-                  </LikeButton>
+            const avatarUrl =
+              post.author_avatar ||
+              post.author_profile?.avatar ||
+              post.author?.avatar
 
-                  <CommentButton onClick={() => toggleComments(post.id)}>
-                    <svg viewBox="0 0 24 24">
-                      <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
-                    </svg>
-                    <span>{post.comments_count || 0}</span>
-                  </CommentButton>
-                </PostFooter>
+            return (
+              <PostCard key={post.id}>
+                <PostAvatar>
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt={authorName} />
+                  ) : (
+                    <div>{authorName[0]?.toUpperCase() || 'C'}</div>
+                  )}
+                </PostAvatar>
 
-                {/* Seção de comentários retrátil */}
-                {activeTitComments === post.id && (
-                  <CommentsSection>
-                    <CommentBox onSubmit={(e) => handleAddComment(e, post.id)}>
-                      <input
-                        type="text"
-                        placeholder="Escreva um comentário..."
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
-                      />
-                      <button
-                        type="submit"
-                        disabled={!commentText.trim() || isSubmittingComment}
-                      >
-                        Responder
-                      </button>
-                    </CommentBox>
+                <PostContent>
+                  <PostHeader>
+                    <strong>{authorName}</strong>
+                    <span>@{authorName}</span>
+                  </PostHeader>
+                  <PostBody>{post.content}</PostBody>
 
-                    {commentsMap[post.id]?.length === 0 ? (
-                      <p style={{ color: '#71767b', fontSize: '0.85rem' }}>
-                        Nenhum comentário ainda. Seja o primeiro a responder!
-                      </p>
-                    ) : (
-                      commentsMap[post.id]?.map((comment) => (
-                        <CommentItem key={comment.id}>
-                          <div>
-                            <strong>@{comment.user?.username || 'marciano'}:</strong>{' '}
-                            <span>{comment.content}</span>
-                          </div>
-                        </CommentItem>
-                      ))
-                    )}
-                  </CommentsSection>
-                )}
-              </PostContent>
-            </PostCard>
-          ))
+                  <PostFooter>
+                    <LikeButton
+                      $isLiked={post.is_liked}
+                      onClick={() => handleLike(post.id)}
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      </svg>
+                      <span>{post.likes_count || 0}</span>
+                    </LikeButton>
+
+                    <CommentButton onClick={() => toggleComments(post.id)}>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
+                      </svg>
+                      <span>{post.comments_count || 0}</span>
+                    </CommentButton>
+                  </PostFooter>
+
+                  {/* Seção de comentários retrátil */}
+                  {activeTitComments === post.id && (
+                    <CommentsSection>
+                      <CommentBox onSubmit={(e) => handleAddComment(e, post.id)}>
+                        <input
+                          type="text"
+                          placeholder="Escreva um comentário..."
+                          value={commentText}
+                          onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <button
+                          type="submit"
+                          disabled={!commentText.trim() || isSubmittingComment}
+                        >
+                          Responder
+                        </button>
+                      </CommentBox>
+
+                      {commentsMap[post.id]?.length === 0 ? (
+                        <p style={{ color: '#71767b', fontSize: '0.85rem' }}>
+                          Nenhum comentário ainda. Seja o primeiro a responder!
+                        </p>
+                      ) : (
+                        commentsMap[post.id]?.map((comment: any) => {
+                          const commentAuthor =
+                            typeof comment.author === 'string'
+                              ? comment.author
+                              : comment.author?.username ||
+                                comment.user?.username ||
+                                currentUser?.username ||
+                                'codefather'
+
+                          return (
+                            <CommentItem key={comment.id}>
+                              <div>
+                                <strong>@{commentAuthor}:</strong>{' '}
+                                <span>{comment.content}</span>
+                              </div>
+                            </CommentItem>
+                          )
+                        })
+                      )}
+                    </CommentsSection>
+                  )}
+                </PostContent>
+              </PostCard>
+            )
+          })
         )}
       </FeedContainer>
     </LayoutContainer>

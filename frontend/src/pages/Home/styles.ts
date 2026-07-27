@@ -2,17 +2,21 @@ import styled from 'styled-components'
 
 export const LayoutContainer = styled.div`
   display: flex;
+  justify-content: center;
   min-height: 100vh;
   max-width: 1280px;
   margin: 0 auto;
+  width: 100%;
 `
 
 export const FeedContainer = styled.main`
-  flex: 1;
-  max-width: 650px; /* Aumentamos para dar mais espaço ao feed */
-  border-right: 1px solid ${({ theme }) => theme.colors.border};
-  border-left: 1px solid ${({ theme }) => theme.colors.border};
+  width: 100%;
+  max-width: 600px;
+  min-width: 320px;
+  border-right: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
+  border-left: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
   min-height: 100vh;
+  box-sizing: border-box;
 `
 
 export const Header = styled.header`
@@ -21,13 +25,14 @@ export const Header = styled.header`
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
   z-index: 10;
 
   h2 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text || '#fff'};
+    margin: 0;
   }
 `
 
@@ -35,21 +40,21 @@ export const CreateTitBox = styled.form`
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
 
   textarea {
     width: 100%;
     background: transparent;
     border: none;
     resize: none;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text || '#fff'};
     font-size: 1.125rem;
     font-family: inherit;
     min-height: 90px;
     outline: none;
 
     &::placeholder {
-      color: ${({ theme }) => theme.colors.textSecondary};
+      color: ${({ theme }) => theme.colors.textSecondary || '#71767b'};
     }
   }
 `
@@ -63,7 +68,7 @@ export const PublishActions = styled.div`
 `
 
 export const PublishButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary || '#1d9bf0'};
   color: #ffffff;
   border: none;
   border-radius: 9999px;
@@ -87,7 +92,7 @@ export const PostCard = styled.article`
   display: flex;
   gap: 0.875rem;
   padding: 1.25rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border || '#2f3336'};
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
@@ -96,7 +101,7 @@ export const PostCard = styled.article`
 `
 
 export const PostAvatar = styled.div`
-  flex-shrink: 0; /* IMPEDE QUE O AVATAR SEJA ESPREMIDO! */
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
 
@@ -114,14 +119,14 @@ export const PostAvatar = styled.div`
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text || '#fff'};
     font-size: 1.1rem;
   }
 `
 
 export const PostContent = styled.div`
   flex: 1;
-  min-width: 0; /* Evita vazamento de texto longo fora do container */
+  min-width: 0;
 `
 
 export const PostHeader = styled.div`
@@ -132,7 +137,7 @@ export const PostHeader = styled.div`
   flex-wrap: wrap;
 
   strong {
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text || '#fff'};
     font-size: 0.95rem;
   }
 
@@ -143,10 +148,10 @@ export const PostHeader = styled.div`
 `
 
 export const PostBody = styled.p`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.text || '#fff'};
   font-size: 0.95rem;
   line-height: 1.5;
-  word-break: break-word; /* Se o Marciano digitar um texto gigante sem espaço, quebra a linha bonitinho */
+  word-break: break-word;
   margin: 0;
 `
 
@@ -154,7 +159,9 @@ export const EmptyStateText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary || '#71767b'};
   text-align: center;
   margin-top: 3rem;
+  padding: 0 1.5rem;
   font-size: 0.95rem;
+  line-height: 1.5;
 `
 
 export const PostFooter = styled.div`
