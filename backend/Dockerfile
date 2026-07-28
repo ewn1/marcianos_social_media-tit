@@ -4,7 +4,6 @@ FROM python:3.12-slim
 ### variáveis de ambiente
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    POETRY_VERSION=1.8.2 \
     POETRY_HOME="/opt/poetry" \
     POETRY_NO_INTERACTION=1 \
     PATH="$POETRY_HOME/bin:$PATH"
@@ -17,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ### Instala o poetry oficialmente no diretório definido em POETRY_HOME
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - --version 2.1.1 || curl -sSL https://install.python-poetry.org | python3 -
 
 ### Define o diretório de trabalho dentro do container
 WORKDIR /app
