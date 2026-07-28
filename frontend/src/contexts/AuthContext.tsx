@@ -30,8 +30,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (storedToken) {
         try {
           const response = await api.get<Profile>('profiles/me/')
-          setProfile(response.data)
-          setUser(response.data.user || (response.data as unknown as User))
+          const profileData = response.data
+          setProfile(profileData)
+          setUser({
+            id: profileData.id,
+            username: profileData.username,
+            email: '',
+          })
         } catch (error) {
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
@@ -52,9 +57,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('refreshToken', refresh)
 
     const profileResponse = await api.get<Profile>('profiles/me/')
+    const profileData = profileResponse.data
 
-    setProfile(profileResponse.data)
-    setUser(profileResponse.data.user || (profileResponse.data as unknown as User))
+    setProfile(profileData)
+    setUser({
+      id: profileData.id,
+      username: profileData.username,
+      email: '',
+    })
   }
 
   const register = async (userData: Record<string, string>) => {

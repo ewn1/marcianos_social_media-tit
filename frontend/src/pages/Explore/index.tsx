@@ -40,18 +40,16 @@ export function Explore() {
     async function fetchProfiles() {
       setLoading(true)
       try {
-        // opção para remover o @ cado o usuario estaja pesquisando pelo username com @
         const cleanSearch = search.trim().replace(/^@/, '')
         const response = await api.get(`profiles/?search=${cleanSearch}`)
         const data = Array.isArray(response.data)
           ? response.data
           : response.data.results || []
 
-        const myUsername = currentUser?.username || currentUser?.username
+        const myUsername = currentUser?.username
 
-        // Filtra para não exibir o próprio usuário logado na busca
         const filtered = data.filter((p: Profile) => {
-          const pUsername = p.username || p.username
+          const pUsername = p.username
           return pUsername !== myUsername
         })
 
@@ -75,7 +73,6 @@ export function Explore() {
     try {
       await api.post(`profiles/${targetUsername}/follow/`)
 
-      // Atualiza o usuário atual para sincronizar quem ele segue
       const updatedMe = await api.get<Profile>('profiles/me/')
       setCurrentUser(updatedMe.data)
     } catch (err) {
@@ -105,10 +102,15 @@ export function Explore() {
             </FeedbackMessage>
           ) : (
             profiles.map((profile) => {
-              const username = profile.username || profile.username || ''
-              const isFollowing = currentUser?.following?.some(
-                (f: any) => f === profile.id || f.id === profile.id
-              )
+              const username = profile.username || ''
+
+              // Validação blindada para checar se o ID ou o objeto consta na lista de following
+              const isFollowing = currentUser?.following?.some((f: any) => {
+                if (typeof f === 'object' && f !== null) {
+                  return f.id === profile.id || f.username === username
+                }
+                return Number(f) === Number(profile.id)
+              })
 
               return (
                 <UserCard key={profile.id}>
@@ -127,10 +129,13 @@ export function Explore() {
                   </UserDetails>
 
                   <FollowButton
-                    $isFollowing={isFollowing}
+                    $isFollowing={Boolean(isFollowing)}
                     onClick={(e) => handleFollow(username, e)}
                   >
-                    {isFollowing ? 'Seguindo' : 'Seguir'}
+                    <span className="text-default">
+                      {isFollowing ? 'Seguindo' : 'Seguir'}
+                    </span>
+                    <span className="text-hover">Deixar de seguir</span>
                   </FollowButton>
                 </UserCard>
               )

@@ -1,4 +1,5 @@
 import { useState, useEffect, SyntheticEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../../components/Sidebar'
 import api from '../../services/api'
 import { Tit, Comment, Profile } from '../../types'
@@ -29,6 +30,7 @@ export function Home() {
   const [currentUser, setCurrentUser] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const navigate = useNavigate()
 
   // estado para gerenciamento dos comentários
   const [activeTitComments, setActiveTitComments] = useState<number | null>(null)
@@ -203,13 +205,16 @@ export function Home() {
         ) : (
           posts.map((post: any) => {
             // Mapeamento dinâmico para dados do autor e avatar
-            const authorName =
+            const authorUsername =
               typeof post.author === 'string'
                 ? post.author
-                : post.author_profile?.display_name ||
+                : post.author_profile?.username ||
                   post.author?.username ||
                   currentUser?.username ||
                   'codefather'
+
+            const authorDisplayName =
+              post.author_profile?.display_name || authorUsername
 
             const avatarUrl =
               post.author_avatar ||
@@ -218,18 +223,24 @@ export function Home() {
 
             return (
               <PostCard key={post.id}>
-                <PostAvatar>
+                <PostAvatar 
+                  style={{ cursor: 'pointer' }} 
+                  onClick={() => navigate(`/profile/${authorUsername}`)}
+                >
                   {avatarUrl ? (
-                    <img src={avatarUrl} alt={authorName} />
+                    <img src={avatarUrl} alt={authorDisplayName} />
                   ) : (
-                    <div>{authorName[0]?.toUpperCase() || 'C'}</div>
+                    <div>{authorDisplayName[0]?.toUpperCase() || 'C'}</div>
                   )}
                 </PostAvatar>
 
                 <PostContent>
-                  <PostHeader>
-                    <strong>{authorName}</strong>
-                    <span>@{authorName}</span>
+                  <PostHeader 
+                    style={{ cursor: 'pointer' }} 
+                    onClick={() => navigate(`/profile/${authorUsername}`)}
+                  >
+                    <strong>{authorDisplayName}</strong>
+                    <span>@{authorUsername}</span>
                   </PostHeader>
                   <PostBody>{post.content}</PostBody>
 

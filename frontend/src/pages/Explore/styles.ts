@@ -13,26 +13,27 @@ export const ExploreContainer = styled.main`
   width: 100%;
   max-width: 600px;
   min-width: 320px;
-  border-right: 1px solid ${({ theme }) => theme.colors?.border || '#2f3336'};
-  border-left: 1px solid ${({ theme }) => theme.colors?.border || '#2f3336'};
   min-height: 100vh;
   box-sizing: border-box;
+  padding: 1rem;
 `
 
 export const Header = styled.header`
   position: sticky;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(12px);
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors?.border || '#2f3336'};
+  border-radius: 16px;
+  margin-bottom: 1rem;
   z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 `
 
 export const SearchInput = styled.input`
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid ${({ theme }) => theme.colors?.border || '#333'};
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   padding: 0.75rem 1.25rem;
   color: ${({ theme }) => theme.colors?.text || '#fff'};
@@ -48,18 +49,23 @@ export const SearchInput = styled.input`
 export const UserList = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `
 
 export const UserCard = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors?.border || '#2f3336'};
-  transition: background-color 0.2s;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background 0.2s ease;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 `
 
@@ -80,6 +86,7 @@ export const UserAvatar = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  color: #fff;
 
   img {
     width: 100%;
@@ -95,6 +102,10 @@ export const UserNames = styled.div`
   strong {
     color: ${({ theme }) => theme.colors?.text || '#fff'};
     font-size: 0.95rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   span {
@@ -104,35 +115,53 @@ export const UserNames = styled.div`
 `
 
 export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
-  background-color: ${({ $isFollowing, theme }) =>
-    $isFollowing ? 'transparent' : theme.colors?.text || '#fff'};
-  color: ${({ $isFollowing, theme }) =>
-    $isFollowing ? theme.colors?.text || '#fff' : '#000'};
-  border: 1px solid
-    ${({ $isFollowing, theme }) =>
-      $isFollowing ? theme.colors?.border || '#536471' : 'transparent'};
+  background-color: ${({ $isFollowing }) => ($isFollowing ? 'transparent' : '#fff')};
+  color: ${({ $isFollowing }) => ($isFollowing ? '#fff' : '#000')};
+  border: 1px solid ${({ $isFollowing }) => ($isFollowing ? 'rgba(255, 255, 255, 0.2)' : 'transparent')};
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   font-weight: 700;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  min-width: 140px;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+
+  .text-default {
+    display: inline;
+  }
+
+  .text-hover {
+    display: none;
+  }
 
   &:hover {
-    opacity: 0.9;
     ${({ $isFollowing }) =>
-      $isFollowing &&
+      $isFollowing
+        ? `
+        background-color: rgba(244, 33, 46, 0.1) !important;
+        color: #f4212e !important;
+        border-color: #f4212e !important;
+
+        .text-default {
+          display: none;
+        }
+        .text-hover {
+          display: inline;
+        }
       `
-      background-color: rgba(244, 33, 46, 0.1);
-      color: #f4212e;
-      border-color: #f4212e;
-    `}
+        : `
+        opacity: 0.9;
+      `}
   }
 `
 
 export const FeedbackMessage = styled.p`
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 1rem;
   color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
   font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 `

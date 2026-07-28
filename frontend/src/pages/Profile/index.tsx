@@ -15,6 +15,10 @@ import {
   StatsContainer,
   EditForm,
   SaveButton,
+  FollowActionButton,
+  TitsSection,
+  AvatarFallback,
+  EditLabel
 } from './styles'
 import {
   PostCard,
@@ -67,7 +71,7 @@ export function ProfilePage() {
           ? titsResponse.data
           : titsResponse.data.results || []
 
-        const profileUsername = targetProfile.username || targetProfile.username
+        const profileUsername = targetProfile.username
 
         const myTits = allTits.filter((tit) => {
           const authorName =
@@ -137,7 +141,7 @@ export function ProfilePage() {
   const handleFollowToggle = async () => {
     if (!profile || !currentUser) return
 
-    const targetUsername = profile.username || profile.username
+    const targetUsername = profile.username
 
     try {
       await api.post(`profiles/${targetUsername}/follow/`)
@@ -167,9 +171,7 @@ export function ProfilePage() {
   }
 
   // Verifica se o perfil visualizado é do próprio usuário logado
-  const isOwnProfile =
-    currentUser?.username === profile?.username ||
-    currentUser?.username === profile?.username
+  const isOwnProfile = currentUser?.username === profile?.username
 
   // Verifica se o usuário logado está seguindo este perfil
   const isFollowing = currentUser?.following?.some(
@@ -201,16 +203,15 @@ export function ProfilePage() {
                 {isEditing ? 'Cancelar' : 'Editar perfil'}
               </EditProfileButton>
             ) : (
-              <EditProfileButton
+              <FollowActionButton
+                $isFollowing={isFollowing}
                 onClick={handleFollowToggle}
-                style={{
-                  backgroundColor: isFollowing ? 'transparent' : '#fff',
-                  color: isFollowing ? '#fff' : '#000',
-                  border: isFollowing ? '1px solid #536471' : 'none',
-                }}
               >
-                {isFollowing ? 'Seguindo' : 'Seguir'}
-              </EditProfileButton>
+                <span className="text-default">
+                  {isFollowing ? 'Seguindo' : 'Seguir'}
+                </span>
+                <span className="text-hover">Deixar de seguir</span>
+              </FollowActionButton>
             )}
           </AvatarSection>
 
@@ -232,9 +233,9 @@ export function ProfilePage() {
           {/* Form de Edição (Apenas para o próprio perfil) */}
           {isEditing && isOwnProfile && (
             <EditForm onSubmit={handleSaveProfile}>
-              <label style={{ fontSize: '0.85rem', color: '#71767b' }}>
+              <EditLabel>
                 Foto de perfil:
-              </label>
+              </EditLabel>
               <input
                 type="file"
                 accept="image/*"
@@ -262,7 +263,7 @@ export function ProfilePage() {
         </ProfileHeader>
 
         {/* Tits do Usuário */}
-        <div style={{ padding: '1rem 0' }}>
+        <TitsSection>
           {userTits.length === 0 ? (
             <EmptyStateText>Nenhum Tit publicado ainda.</EmptyStateText>
           ) : (
@@ -286,7 +287,7 @@ export function ProfilePage() {
                     {avatarUrl ? (
                       <img src={avatarUrl} alt={authorName} />
                     ) : (
-                      <div>{authorName[0]?.toUpperCase() || 'M'}</div>
+                      <AvatarFallback>{authorName[0]?.toUpperCase() || 'M'}</AvatarFallback>
                     )}
                   </PostAvatar>
                   <PostContent>
@@ -300,7 +301,7 @@ export function ProfilePage() {
               )
             })
           )}
-        </div>
+        </TitsSection>
       </ProfileContainer>
     </LayoutContainer>
   )

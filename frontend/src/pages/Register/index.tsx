@@ -1,4 +1,4 @@
-import { useState, SubmitEvent } from 'react'
+import { useState, SyntheticEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import {
@@ -24,7 +24,7 @@ export function Register() {
   const { register } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: SubmitEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
     setError('')
 
