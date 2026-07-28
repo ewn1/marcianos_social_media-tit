@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    container_name: true_is_tough_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    command: poetry run python manage.py runserver 0.0.0.0:8000
