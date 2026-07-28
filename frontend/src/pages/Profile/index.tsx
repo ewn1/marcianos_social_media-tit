@@ -2,6 +2,7 @@ import { useState, useEffect, SyntheticEvent, ChangeEvent } from 'react'
 import { useParams } from 'react-router-dom'
 import { Sidebar } from '../../components/Sidebar'
 import { TitCard } from '../../components/TitCard'
+import { FollowListModal } from '../../components/FollowListModal'
 import api from '../../services/api'
 import { Profile, Tit } from '../../types'
 import {
@@ -31,6 +32,11 @@ export function ProfilePage() {
   const [userTits, setUserTits] = useState<Tit[]>([])
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
+
+  // Estados do Modal de Seguidores/Seguindo
+  const [modalType, setModalType] = useState<'followers' | 'following' | null>(null)
+  const [modalUsers, setModalUsers] = useState<Profile[]>([])
+  const [loadingModal, setLoadingModal] = useState(false)
 
   // Formulário de edição
   const [displayName, setDisplayName] = useState('')
@@ -148,6 +154,22 @@ export function ProfilePage() {
     }
   }
 
+  const handleOpenModal = async (type: 'followers' | 'following') => {
+    if (!profile) return
+    setModalType(type)
+    setLoadingModal(true)
+    try {
+      const response = await api.get<Profile[]>(`profiles/${profile.username}/${type}/`)
+      const data = Array.isArray(response.data) ? response.data : (response.data as any).results || []
+      setModalUsers(data)
+    } catch (error) {
+      console.error(`Erro ao carregar ${type}:`, error)
+      setModalUsers([])
+    } finally {
+      setLoadingModal(false)
+    }
+  }
+
   const handleUpdateTit = (updatedTit: Tit) => {
     setUserTits((prev) => prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)))
   }
@@ -213,10 +235,10 @@ export function ProfilePage() {
             {profile?.bio && <p>{profile.bio}</p>}
 
             <StatsContainer>
-              <span>
+              <span onClick={() => handleOpenModal('following')} style={{ cursor: 'pointer' }}>
                 <strong>{profile?.following_count || 0}</strong> Seguindo
               </span>
-              <span>
+              <span onClick={() => handleOpenModal('followers')} style={{ cursor: 'pointer' }}>
                 <strong>{profile?.followers_count || 0}</strong> Seguidores
               </span>
             </StatsContainer>
@@ -266,6 +288,15 @@ export function ProfilePage() {
           )}
         </TitsSection>
       </ProfileContainer>
+
+      {modalType && (
+        <FollowListModal
+          title={modalType === 'followers' ? 'Seguidores' : 'Seguindo'}
+          users={modalUsers}
+          loading={loadingModal}
+          onClose={() => setModalType(null)}
+        />
+      )}
     </LayoutContainer>
   )
 }

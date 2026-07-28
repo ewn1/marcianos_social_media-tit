@@ -84,6 +84,34 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_200_OK,
             )
 
+    ### Action para o react poder fazer a requisição e renderizar a lista de seguidos e seguidores
+    @action(
+        detail=True,
+        methods=["get"],
+        permission_classes=[permissions.IsAuthenticatedOrReadOnly],
+    )
+    def followers(self, request, user__username=None):
+        profile = self.get_object()
+        # Busca perfis que possuem este profile dentro do seu 'following'
+        followers_qs = Profile.objects.filter(following=profile)
+        serializer = self.get_serializer(
+            followers_qs, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
+
+    @action(
+        detail=True,
+        methods=["get"],
+        permission_classes=[permissions.IsAuthenticatedOrReadOnly],
+    )
+    def following(self, request, user__username=None):
+        profile = self.get_object()
+        following_qs = profile.following.all()
+        serializer = self.get_serializer(
+            following_qs, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
+
 
 ### ViewSet dos tits com feed dinâmico
 class TitViewSet(viewsets.ModelViewSet):
