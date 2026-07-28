@@ -26,7 +26,7 @@ COPY pyproject.toml poetry.lock ./
 
 ### Configura o poetry e instala as dependências em modo sem ambiente virtual próprio
 RUN /opt/poetry/bin/poetry config virtualenvs.create false \
-    && /opt/poetry/bin/poetry install --no-root --without dev
+    && /opt/poetry/bin/poetry install --no-root
 
 #### Copia o restante do código do backend para dentro do container
 COPY . .
@@ -35,4 +35,4 @@ COPY . .
 EXPOSE 8000
 
 ### Comando para rodar a aplicação conectado na nuvem
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
