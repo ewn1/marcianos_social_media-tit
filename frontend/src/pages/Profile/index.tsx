@@ -1,6 +1,7 @@
 import { useState, useEffect, SyntheticEvent, ChangeEvent } from 'react'
 import { useParams } from 'react-router-dom'
 import { Sidebar } from '../../components/Sidebar'
+import { TitCard } from '../../components/TitCard'
 import api from '../../services/api'
 import { Profile, Tit } from '../../types'
 import {
@@ -18,16 +19,9 @@ import {
   FollowActionButton,
   TitsSection,
   AvatarFallback,
-  EditLabel
+  EditLabel,
 } from './styles'
-import {
-  PostCard,
-  PostAvatar,
-  PostContent,
-  PostHeader,
-  PostBody,
-  EmptyStateText,
-} from '../Home/styles'
+import { EmptyStateText } from '../Home/styles'
 
 export function ProfilePage() {
   const { username } = useParams<{ username?: string }>()
@@ -49,11 +43,9 @@ export function ProfilePage() {
     async function loadProfileData() {
       setLoading(true)
       try {
-        // 1. Carrega dados do usuário logado para saber quem está navegando
         const meResponse = await api.get<Profile>('profiles/me/')
         setCurrentUser(meResponse.data)
 
-        // 2. Determina qual perfil carregar (se passado na URL ou se é o 'me')
         let targetProfile = meResponse.data
 
         if (username && username !== meResponse.data.username) {
@@ -65,7 +57,6 @@ export function ProfilePage() {
         setDisplayName(targetProfile.display_name || '')
         setBio(targetProfile.bio || '')
 
-        // 3. Busca todos os Tits e filtra pelos Tits do perfil visualizado
         const titsResponse = await api.get('tits/')
         const allTits: any[] = Array.isArray(titsResponse.data)
           ? titsResponse.data
@@ -137,7 +128,6 @@ export function ProfilePage() {
     }
   }
 
-  // Ação de Seguir / Deixar de Seguir
   const handleFollowToggle = async () => {
     if (!profile || !currentUser) return
 
@@ -146,7 +136,6 @@ export function ProfilePage() {
     try {
       await api.post(`profiles/${targetUsername}/follow/`)
 
-      // Recarrega o perfil atual e o perfil visitado para atualizar contadores
       const [meRes, profileRes] = await Promise.all([
         api.get<Profile>('profiles/me/'),
         api.get<Profile>(`profiles/${targetUsername}/`),
@@ -157,6 +146,10 @@ export function ProfilePage() {
     } catch (error) {
       console.error('Erro ao seguir/deixar de seguir:', error)
     }
+  }
+
+  const handleUpdateTit = (updatedTit: Tit) => {
+    setUserTits((prev) => prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)))
   }
 
   if (loading) {
@@ -170,10 +163,7 @@ export function ProfilePage() {
     )
   }
 
-  // Verifica se o perfil visualizado é do próprio usuário logado
   const isOwnProfile = currentUser?.username === profile?.username
-
-  // Verifica se o usuário logado está seguindo este perfil
   const isFollowing = currentUser?.following?.some(
     (f: any) => f === profile?.id || f.id === profile?.id
   )
@@ -194,7 +184,9 @@ export function ProfilePage() {
               ) : profile?.avatar ? (
                 <img src={profile.avatar} alt={profile.display_name} />
               ) : (
-                profile?.display_name?.[0] || profile?.username?.[0] || 'T'
+                <AvatarFallback>
+                  {profile?.display_name?.[0] || profile?.username?.[0] || 'T'}
+                </AvatarFallback>
               )}
             </AvatarImage>
 
@@ -230,12 +222,9 @@ export function ProfilePage() {
             </StatsContainer>
           </UserInfo>
 
-          {/* Form de Edição (Apenas para o próprio perfil) */}
           {isEditing && isOwnProfile && (
             <EditForm onSubmit={handleSaveProfile}>
-              <EditLabel>
-                Foto de perfil:
-              </EditLabel>
+              <EditLabel>Foto de perfil:</EditLabel>
               <input
                 type="file"
                 accept="image/*"
@@ -262,44 +251,18 @@ export function ProfilePage() {
           )}
         </ProfileHeader>
 
-        {/* Tits do Usuário */}
         <TitsSection>
           {userTits.length === 0 ? (
             <EmptyStateText>Nenhum Tit publicado ainda.</EmptyStateText>
           ) : (
-            userTits.map((tit: any) => {
-              const authorName =
-                typeof tit.author === 'string'
-                  ? tit.author
-                  : tit.author_profile?.display_name ||
-                    tit.author?.username ||
-                    profile?.username ||
-                    'Marciano'
-
-              const avatarUrl =
-                tit.author_avatar ||
-                tit.author_profile?.avatar ||
-                profile?.avatar
-
-              return (
-                <PostCard key={tit.id}>
-                  <PostAvatar>
-                    {avatarUrl ? (
-                      <img src={avatarUrl} alt={authorName} />
-                    ) : (
-                      <AvatarFallback>{authorName[0]?.toUpperCase() || 'M'}</AvatarFallback>
-                    )}
-                  </PostAvatar>
-                  <PostContent>
-                    <PostHeader>
-                      <strong>{authorName}</strong>
-                      <span>@{profile?.username}</span>
-                    </PostHeader>
-                    <PostBody>{tit.content}</PostBody>
-                  </PostContent>
-                </PostCard>
-              )
-            })
+            userTits.map((tit) => (
+              <TitCard
+                key={tit.id}
+                tit={tit}
+                currentUser={currentUser}
+                onUpdateTit={handleUpdateTit}
+              />
+            ))
           )}
         </TitsSection>
       </ProfileContainer>
