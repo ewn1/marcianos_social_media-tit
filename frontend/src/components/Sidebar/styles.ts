@@ -9,8 +9,6 @@ export const Container = styled.aside`
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 16px;
-  border-right: 1px solid ${({ theme }) => theme.colors.border};
-  /* Linha divisória antiga integrada ao novo design system */
 `
 
 export const TopSection = styled.div`

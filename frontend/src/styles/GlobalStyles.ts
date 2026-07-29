@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-
   html {
     overflow-y: scroll;
     scrollbar-gutter: stable;
@@ -12,6 +11,8 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -35,19 +36,20 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: bold;
     transition: background-color 0.2s ease, opacity 0.2s ease;
 
-    &:hover {
+    &:hover:not(:disabled) {
       opacity: 0.9;
     }
   }
 
   input, textarea {
-    background-color: ${({ theme }) => theme.colors.cardBackground};
+    background-color: ${({ theme }) => theme.colors.background};
     border: 1px solid ${({ theme }) => theme.colors.border};
     color: ${({ theme }) => theme.colors.text};
     border-radius: 8px;
     padding: 12px;
     font-size: 15px;
     outline: none;
+    font-family: inherit;
 
     &:focus {
       border-color: ${({ theme }) => theme.colors.primary};
