@@ -15,6 +15,7 @@ import {
   CommentBox,
   CommentItem,
   AvatarFallback,
+  NoCommentsText,
 } from './styles'
 
 interface TitCardProps {
@@ -136,10 +137,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
 
   return (
     <PostCard>
-      <PostAvatar
-        style={{ cursor: 'pointer' }}
-        onClick={() => navigate(`/profile/${authorUsername}`)}
-      >
+      <PostAvatar onClick={() => navigate(`/profile/${authorUsername}`)}>
         {avatarUrl ? (
           <img src={avatarUrl} alt={authorDisplayName} />
         ) : (
@@ -148,10 +146,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
       </PostAvatar>
 
       <PostContent>
-        <PostHeader
-          style={{ cursor: 'pointer' }}
-          onClick={() => navigate(`/profile/${authorUsername}`)}
-        >
+        <PostHeader onClick={() => navigate(`/profile/${authorUsername}`)}>
           <strong>{authorDisplayName}</strong>
           <span>@{authorUsername}</span>
         </PostHeader>
@@ -189,9 +184,9 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
             </CommentBox>
 
             {comments.length === 0 ? (
-              <p style={{ color: '#71767b', fontSize: '0.85rem' }}>
+              <NoCommentsText>
                 Nenhum comentário ainda. Seja o primeiro a responder!
-              </p>
+              </NoCommentsText>
             ) : (
               comments.map((comment: any) => {
                 const commentAuthor =

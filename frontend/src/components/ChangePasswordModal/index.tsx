@@ -7,6 +7,8 @@ import {
   EditForm,
   EditLabel,
   SaveButton,
+  ButtonGroup,
+  CancelButton,
 } from './styles'
 
 interface ChangePasswordModalProps {
@@ -72,14 +74,14 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
             onChange={(e) => setNewPassword(e.target.value)}
           />
 
-          <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+          <ButtonGroup>
             <SaveButton type="submit" disabled={loading}>
               {loading ? 'Salvando...' : 'Salvar nova senha'}
             </SaveButton>
-            <button type="button" onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+            <CancelButton type="button" onClick={onClose}>
               Cancelar
-            </button>
-          </div>
+            </CancelButton>
+          </ButtonGroup>
         </EditForm>
       </ModalContent>
     </ModalOverlay>

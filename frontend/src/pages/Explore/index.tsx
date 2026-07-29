@@ -21,19 +21,30 @@ export function Explore() {
   const [search, setSearch] = useState('')
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [currentUser, setCurrentUser] = useState<Profile | null>(null)
+  const [myFollowingIds, setMyFollowingIds] = useState<(string | number)[]>([])
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
-    async function fetchCurrentUser() {
+    async function fetchCurrentUserAndFollowing() {
       try {
         const response = await api.get<Profile>('profiles/me/')
         setCurrentUser(response.data)
+
+        // Busca a lista real de quem o usuário logado segue usando o endpoint da API
+        const followingResponse = await api.get(`profiles/${response.data.username}/following/`)
+        const followingData = Array.isArray(followingResponse.data)
+          ? followingResponse.data
+          : followingResponse.data.results || []
+
+        // Mapeia os IDs ou usernames de quem seguimos
+        const ids = followingData.map((f: any) => f.id || f.username || f)
+        setMyFollowingIds(ids)
       } catch (err) {
-        console.error('Erro ao buscar perfil atual:', err)
+        console.error('Erro ao buscar dados do usuário atual:', err)
       }
     }
-    fetchCurrentUser()
+    fetchCurrentUserAndFollowing()
   }, [])
 
   useEffect(() => {
@@ -73,10 +84,15 @@ export function Explore() {
     try {
       await api.post(`profiles/${targetUsername}/follow/`)
 
-      const updatedMe = await api.get<Profile>('profiles/me/')
-      setCurrentUser(updatedMe.data)
+      // Atualiza a lista de quem seguimos após clicar no botão
+      const followingResponse = await api.get(`profiles/${currentUser?.username}/following/`)
+      const followingData = Array.isArray(followingResponse.data)
+        ? followingResponse.data
+        : followingResponse.data.results || []
+      
+      setMyFollowingIds(followingData.map((f: any) => f.id || f.username || f))
     } catch (err) {
-      console.error('Erro ao seguir/deixar de seguir:', err)
+        console.error('Erro ao seguir/deixar de seguir:', err)
     }
   }
 
@@ -104,13 +120,12 @@ export function Explore() {
             profiles.map((profile) => {
               const username = profile.username || ''
 
-              // Validação blindada para checar se o ID ou o objeto consta na lista de following
-              const isFollowing = currentUser?.following?.some((f: any) => {
-                if (typeof f === 'object' && f !== null) {
-                  return f.id === profile.id || f.username === username
-                }
-                return Number(f) === Number(profile.id)
-              })
+              // Verifica se o ID ou username do perfil está no array de quem seguimos
+              const isFollowing = myFollowingIds.some(
+                (idOrUser) =>
+                  String(idOrUser) === String(profile.id) ||
+                  String(idOrUser) === String(username)
+              )
 
               return (
                 <UserCard key={profile.id}>

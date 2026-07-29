@@ -16,12 +16,15 @@ import {
   EditProfileButton,
   UserInfo,
   StatsContainer,
+  StatItem,
   EditForm,
   SaveButton,
   FollowActionButton,
   TitsSection,
   AvatarFallback,
   EditLabel,
+  PasswordButtonContainer,
+  PasswordButton,
 } from './styles'
 import { EmptyStateText } from '../Home/styles'
 
@@ -30,6 +33,7 @@ export function ProfilePage() {
 
   const [profile, setProfile] = useState<Profile | null>(null)
   const [currentUser, setCurrentUser] = useState<Profile | null>(null)
+  const [myFollowingIds, setMyFollowingIds] = useState<(string | number)[]>([])
   const [userTits, setUserTits] = useState<Tit[]>([])
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
@@ -53,6 +57,14 @@ export function ProfilePage() {
       try {
         const meResponse = await api.get<Profile>('profiles/me/')
         setCurrentUser(meResponse.data)
+
+        // Busca a lista real de quem o usuário logado segue
+        const followingResponse = await api.get(`profiles/${meResponse.data.username}/following/`)
+        const followingData = Array.isArray(followingResponse.data)
+          ? followingResponse.data
+          : followingResponse.data.results || []
+        
+        setMyFollowingIds(followingData.map((f: any) => f.id || f.username || f))
 
         let targetProfile = meResponse.data
 
@@ -149,13 +161,18 @@ export function ProfilePage() {
     try {
       await api.post(`profiles/${targetUsername}/follow/`)
 
-      const [meRes, profileRes] = await Promise.all([
-        api.get<Profile>('profiles/me/'),
+      // Atualiza em paralelo o perfil alvo, o usuário logado e a lista de quem o usuário logado segue
+      const [profileRes, followingRes] = await Promise.all([
         api.get<Profile>(`profiles/${targetUsername}/`),
+        api.get(`profiles/${currentUser.username}/following/`),
       ])
 
-      setCurrentUser(meRes.data)
       setProfile(profileRes.data)
+
+      const followingData = Array.isArray(followingRes.data)
+        ? followingRes.data
+        : followingRes.data.results || []
+      setMyFollowingIds(followingData.map((f: any) => f.id || f.username || f))
     } catch (error) {
       console.error('Erro ao seguir/deixar de seguir:', error)
     }
@@ -193,8 +210,12 @@ export function ProfilePage() {
   }
 
   const isOwnProfile = currentUser?.username === profile?.username
-  const isFollowing = currentUser?.following?.some(
-    (f: any) => f === profile?.id || f.id === profile?.id
+  
+  // Validação cruzando com a lista real de following obtida da API
+  const isFollowing = myFollowingIds.some(
+    (idOrUser) =>
+      String(idOrUser) === String(profile?.id) ||
+      String(idOrUser) === String(profile?.username)
   )
 
   return (
@@ -225,7 +246,7 @@ export function ProfilePage() {
               </EditProfileButton>
             ) : (
               <FollowActionButton
-                $isFollowing={isFollowing}
+                $isFollowing={Boolean(isFollowing)}
                 onClick={handleFollowToggle}
               >
                 <span className="text-default">
@@ -242,12 +263,12 @@ export function ProfilePage() {
             {profile?.bio && <p>{profile.bio}</p>}
 
             <StatsContainer>
-              <span onClick={() => handleOpenModal('following')} style={{ cursor: 'pointer' }}>
+              <StatItem onClick={() => handleOpenModal('following')}>
                 <strong>{profile?.following_count || 0}</strong> Seguindo
-              </span>
-              <span onClick={() => handleOpenModal('followers')} style={{ cursor: 'pointer' }}>
+              </StatItem>
+              <StatItem onClick={() => handleOpenModal('followers')}>
                 <strong>{profile?.followers_count || 0}</strong> Seguidores
-              </span>
+              </StatItem>
             </StatsContainer>
           </UserInfo>
 
@@ -269,7 +290,7 @@ export function ProfilePage() {
                 />
 
                 <textarea
-                  placeholder="Escreva sua bio marciana..."
+                  placeholder="Escreva sua bio bolada..."
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                 />
@@ -279,23 +300,14 @@ export function ProfilePage() {
                 </SaveButton>
               </EditForm>
 
-              <div style={{ marginTop: '12px' }}>
-                <button
+              <PasswordButtonContainer>
+                <PasswordButton
                   type="button"
                   onClick={() => setIsPasswordModalOpen(true)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--primary, #1da1f2)',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: '0.95rem',
-                    padding: 0,
-                  }}
                 >
                   Alterar senha
-                </button>
-              </div>
+                </PasswordButton>
+              </PasswordButtonContainer>
             </>
           )}
         </ProfileHeader>

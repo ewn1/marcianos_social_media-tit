@@ -22,6 +22,7 @@ export const PostAvatar = styled.div`
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -49,6 +50,8 @@ export const PostHeader = styled.div`
   align-items: center;
   gap: 0.55rem;
   margin-bottom: 0.25rem;
+  cursor: pointer;
+  width: fit-content;
 
   strong {
     color: ${({ theme }) => theme.colors.text};
@@ -188,4 +191,10 @@ export const CommentItem = styled.div`
   strong {
     color: ${({ theme }) => theme.colors.primary};
   }
+`
+
+export const NoCommentsText = styled.p`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.85rem;
+  margin: 0;
 `

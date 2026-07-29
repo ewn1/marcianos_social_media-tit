@@ -81,6 +81,13 @@ export const EditLabel = styled.label`
   margin-top: 4px;
 `
 
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: center;
+`
+
 export const SaveButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
@@ -99,5 +106,19 @@ export const SaveButton = styled.button`
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+`
+
+export const CancelButton = styled.button`
+  background: transparent;
+  border: none;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
   }
 `

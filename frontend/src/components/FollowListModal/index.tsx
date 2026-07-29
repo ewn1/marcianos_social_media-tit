@@ -9,6 +9,7 @@ import {
   UserInfoWrapper,
   UserAvatar,
   UserDetails,
+  EmptyStateText,
 } from './styles'
 
 interface FollowListModalProps {
@@ -36,13 +37,9 @@ export function FollowListModal({ title, users, loading, onClose }: FollowListMo
 
         <ModalContent>
           {loading ? (
-            <p style={{ textAlign: 'center', color: '#8899a6', padding: '2rem 0' }}>
-              Carregando usuários...
-            </p>
+            <EmptyStateText>Carregando usuários...</EmptyStateText>
           ) : users.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#8899a6', padding: '2rem 0' }}>
-              Nenhum usuário encontrado.
-            </p>
+            <EmptyStateText>Nenhum usuário encontrado.</EmptyStateText>
           ) : (
             users.map((user) => (
               <UserItem key={user.id} onClick={() => handleUserClick(user.username)}>

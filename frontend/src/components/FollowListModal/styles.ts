@@ -35,6 +35,7 @@ export const ModalHeader = styled.div`
   h3 {
     color: ${({ theme }) => theme.colors.text};
     font-size: 1.1rem;
+    margin: 0;
   }
 
   button {
@@ -111,4 +112,12 @@ export const UserDetails = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
   }
+`
+
+export const EmptyStateText = styled.p`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 2rem 0;
+  margin: 0;
+  font-size: 0.95rem;
 `
