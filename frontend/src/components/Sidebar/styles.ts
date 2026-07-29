@@ -9,7 +9,6 @@ export const Container = styled.aside`
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 16px;
-  border-right: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.background};
   z-index: 900;
 
@@ -24,8 +23,6 @@ export const Container = styled.aside`
     justify-content: space-around;
     align-items: center;
     padding: 0 12px;
-    border-right: none;
-    border-top: 1px solid ${({ theme }) => theme.colors.border};
     background-color: ${({ theme }) => theme.colors.cardBackground};
   }
 `
