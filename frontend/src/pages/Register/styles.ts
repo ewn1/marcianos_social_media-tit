@@ -8,6 +8,11 @@ export const Container = styled.div`
   min-height: 100vh;
   width: 100%;
   padding: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `
 
 export const RegisterCard = styled.div`
@@ -20,6 +25,13 @@ export const RegisterCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 24px 20px;
+    border-radius: 14px;
+    gap: 16px;
+  }
 `
 
 export const Title = styled.h1`
@@ -27,6 +39,10 @@ export const Title = styled.h1`
   font-weight: 800;
   color: ${({ theme }) => theme.colors.text};
   text-align: center;
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 `
 
 export const Subtitle = styled.p`
@@ -34,12 +50,21 @@ export const Subtitle = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: center;
   margin-top: -10px;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+    margin-top: -8px;
+  }
 `
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 480px) {
+    gap: 12px;
+  }
 
   input {
     width: 100%;
@@ -50,6 +75,12 @@ export const Form = styled.form`
     color: ${({ theme }) => theme.colors.text};
     font-size: 1rem;
     outline: none;
+    box-sizing: border-box;
+
+    @media (max-width: 480px) {
+      padding: 10px 12px;
+      font-size: 0.95rem;
+    }
 
     &:focus {
       border-color: ${({ theme }) => theme.colors.primary};
@@ -81,6 +112,12 @@ export const Button = styled.button`
   margin-top: 10px;
   transition: background-color 0.2s;
 
+  @media (max-width: 480px) {
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.primaryHover};
   }
@@ -101,6 +138,10 @@ export const FooterText = styled.p`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: center;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 
   a {
     color: ${({ theme }) => theme.colors.primary};

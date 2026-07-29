@@ -9,12 +9,38 @@ export const Container = styled.aside`
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 16px;
+  border-right: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.background};
+  z-index: 900;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 12px;
+    border-right: none;
+    border-top: 1px solid ${({ theme }) => theme.colors.border};
+    background-color: ${({ theme }) => theme.colors.cardBackground};
+  }
 `
 
 export const TopSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 0;
+    width: 100%;
+    justify-content: space-around;
+  }
 `
 
 export const Logo = styled.div`
@@ -25,12 +51,23 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 export const NavMenu = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
+  }
 `
 
 export const NavItem = styled.div<{ $active?: boolean }>`
@@ -52,6 +89,16 @@ export const NavItem = styled.div<{ $active?: boolean }>`
   svg {
     font-size: 24px;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    border-radius: 50%;
+    gap: 0;
+
+    span {
+      display: none;
+    }
+  }
 `
 
 export const UserProfileSection = styled.div`
@@ -65,6 +112,12 @@ export const UserProfileSection = styled.div`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    border-radius: 50%;
+    justify-content: center;
   }
 `
 
@@ -80,6 +133,10 @@ export const UserInfo = styled.div`
   span {
     font-size: 13px;
     color: ${({ theme }) => theme.colors.textSecondary};
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `
 
@@ -97,5 +154,9 @@ export const LogoutButton = styled.button`
 
   &:hover {
     background-color: rgba(244, 33, 46, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
   }
 `

@@ -7,6 +7,10 @@ export const LayoutContainer = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding-bottom: 70px; /* Espaço para a barra de navegação inferior */
+  }
 `
 
 export const ProfileContainer = styled.main`
@@ -16,6 +20,10 @@ export const ProfileContainer = styled.main`
   min-height: 100vh;
   box-sizing: border-box;
   padding: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+  }
 `
 
 export const Header = styled.header`
@@ -32,11 +40,20 @@ export const Header = styled.header`
   align-items: center;
   gap: 1.5rem;
 
+  @media (max-width: 480px) {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+  }
+
   h2 {
     font-size: 1.25rem;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.text};
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 `
 
@@ -47,6 +64,12 @@ export const ProfileHeader = styled.div`
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
 `
 
 export const AvatarSection = styled.div`
@@ -69,6 +92,14 @@ export const AvatarImage = styled.div`
   font-weight: bold;
   color: ${({ theme }) => theme.colors.text};
   border: 4px solid ${({ theme }) => theme.colors.border};
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    width: 72px;
+    height: 72px;
+    border-width: 3px;
+    font-size: 2rem;
+  }
 
   img {
     width: 100%;
@@ -88,6 +119,11 @@ export const EditProfileButton = styled.button`
   cursor: pointer;
   transition: background-color 0.2s;
 
+  @media (max-width: 480px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
@@ -98,11 +134,19 @@ export const UserInfo = styled.div`
     color: ${({ theme }) => theme.colors.text};
     font-size: 1.25rem;
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 
   span {
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.9rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.85rem;
+    }
   }
 
   p {
@@ -110,6 +154,12 @@ export const UserInfo = styled.div`
     font-size: 0.95rem;
     margin: 0.75rem 0;
     line-height: 1.4;
+    word-break: break-word;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
   }
 `
 
@@ -119,6 +169,11 @@ export const StatsContainer = styled.div`
   margin-top: 0.75rem;
   font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+    gap: 1rem;
+  }
 `
 
 export const StatItem = styled.span`
@@ -141,6 +196,12 @@ export const EditForm = styled.form`
   padding-top: 1rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
   input,
   textarea {
     background: ${({ theme }) => theme.colors.background};
@@ -151,6 +212,14 @@ export const EditForm = styled.form`
     font-family: inherit;
     font-size: 0.95rem;
     outline: none;
+    box-sizing: border-box;
+    width: 100%;
+
+    @media (max-width: 480px) {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.9rem;
+      border-radius: 10px;
+    }
 
     &:focus {
       border-color: ${({ theme }) => theme.colors.primary};
@@ -160,12 +229,20 @@ export const EditForm = styled.form`
   textarea {
     resize: vertical;
     min-height: 80px;
+
+    @media (max-width: 480px) {
+      min-height: 70px;
+    }
   }
 `
 
 export const EditLabel = styled.label`
   font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `
 
 export const SaveButton = styled.button`
@@ -179,6 +256,13 @@ export const SaveButton = styled.button`
   cursor: pointer;
   transition: background-color 0.2s;
 
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    align-self: center;
+  }
+
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.primaryHover};
   }
@@ -191,6 +275,11 @@ export const SaveButton = styled.button`
 
 export const PasswordButtonContainer = styled.div`
   margin-top: 12px;
+
+  @media (max-width: 480px) {
+    margin-top: 10px;
+    text-align: center;
+  }
 `
 
 export const PasswordButton = styled.button`
@@ -201,6 +290,10 @@ export const PasswordButton = styled.button`
   font-weight: bold;
   font-size: 0.95rem;
   padding: 0;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 
   &:hover {
     text-decoration: underline;
@@ -219,6 +312,12 @@ export const FollowActionButton = styled.button<{ $isFollowing?: boolean }>`
   min-width: 130px;
   text-align: center;
   transition: all 0.2s ease-in-out;
+
+  @media (max-width: 480px) {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    min-width: 110px;
+  }
 
   .text-default {
     display: inline;

@@ -11,6 +11,11 @@ export const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
 `
 
 export const ModalContainer = styled.div`
@@ -23,6 +28,12 @@ export const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 12px;
+  }
 `
 
 export const ModalHeader = styled.div`
@@ -32,10 +43,18 @@ export const ModalHeader = styled.div`
   padding: 1rem 1.25rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
+  @media (max-width: 480px) {
+    padding: 0.85rem 1rem;
+  }
+
   h3 {
     color: ${({ theme }) => theme.colors.text};
     font-size: 1.1rem;
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 1rem;
+    }
   }
 
   button {
@@ -66,6 +85,10 @@ export const UserItem = styled.div`
   cursor: pointer;
   transition: background-color 0.2s;
 
+  @media (max-width: 480px) {
+    padding: 0.65rem 1rem;
+  }
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
@@ -75,11 +98,14 @@ export const UserInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
 `
 
 export const UserAvatar = styled.div`
   width: 40px;
   height: 40px;
+  min-width: 40px;
   border-radius: 50%;
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.border};
@@ -88,6 +114,12 @@ export const UserAvatar = styled.div`
   justify-content: center;
   color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
+
+  @media (max-width: 480px) {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
 
   img {
     width: 100%;
@@ -99,10 +131,20 @@ export const UserAvatar = styled.div`
 export const UserDetails = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
 
   strong {
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+    }
+
     &:hover {
       text-decoration: underline;
     }
@@ -111,13 +153,25 @@ export const UserDetails = styled.div`
   span {
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 `
 
 export const EmptyStateText = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.colors.textSecondary};
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   margin: 0;
   font-size: 0.95rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+    padding: 1.5rem 1rem;
+  }
 `

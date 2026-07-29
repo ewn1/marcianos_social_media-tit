@@ -10,6 +10,12 @@ export const PostCard = styled.div`
   gap: 0.75rem;
   transition: background-color 0.2s;
 
+  @media (max-width: 480px) {
+    padding: 0.85rem;
+    border-radius: 12px;
+    gap: 0.5rem;
+  }
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
@@ -18,11 +24,18 @@ export const PostCard = styled.div`
 export const PostAvatar = styled.div`
   width: 40px;
   height: 40px;
+  min-width: 40px;
   border-radius: 50%;
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
   cursor: pointer;
+
+  @media (max-width: 480px) {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
 
   img {
     width: 100%;
@@ -43,6 +56,7 @@ export const AvatarFallback = styled.div`
 
 export const PostContent = styled.div`
   flex: 1;
+  min-width: 0;
 `
 
 export const PostHeader = styled.div`
@@ -52,10 +66,26 @@ export const PostHeader = styled.div`
   margin-bottom: 0.25rem;
   cursor: pointer;
   width: fit-content;
+  max-width: 100%;
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    gap: 0.2rem 0.4rem;
+  }
 
   strong {
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+      max-width: 140px;
+    }
+
     &:hover {
       text-decoration: underline;
     }
@@ -64,6 +94,13 @@ export const PostHeader = styled.div`
   span {
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 `
 
@@ -73,12 +110,20 @@ export const PostBody = styled.p`
   line-height: 1.4;
   word-break: break-word;
   margin-bottom: 0.75rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `
 
 export const PostFooter = styled.div`
   display: flex;
   gap: 2rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  @media (max-width: 480px) {
+    gap: 1.5rem;
+  }
 `
 
 interface LikeButtonProps {
@@ -145,6 +190,10 @@ export const CommentBox = styled.form`
   display: flex;
   gap: 0.5rem;
 
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+
   input {
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
@@ -153,6 +202,11 @@ export const CommentBox = styled.form`
     padding: 0.4rem 0.9rem;
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.85rem;
+
+    @media (max-width: 480px) {
+      border-radius: 8px;
+      padding: 0.5rem 0.8rem;
+    }
 
     &:focus {
       outline: none;
@@ -169,6 +223,12 @@ export const CommentBox = styled.form`
     font-size: 0.85rem;
     font-weight: bold;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+      border-radius: 8px;
+      padding: 0.5rem;
+      width: 100%;
+    }
 
     &:disabled {
       opacity: 0.5;
@@ -187,6 +247,7 @@ export const CommentItem = styled.div`
   background: ${({ theme }) => theme.colors.background};
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
+  word-break: break-word;
 
   strong {
     color: ${({ theme }) => theme.colors.primary};

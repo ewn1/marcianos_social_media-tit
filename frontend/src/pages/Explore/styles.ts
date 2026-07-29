@@ -7,6 +7,10 @@ export const LayoutContainer = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding-bottom: 70px; /* Espaço para a barra de navegação inferior */
+  }
 `
 
 export const ExploreContainer = styled.main`
@@ -16,6 +20,10 @@ export const ExploreContainer = styled.main`
   min-height: 100vh;
   box-sizing: border-box;
   padding: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+  }
 `
 
 export const Header = styled.header`
@@ -28,6 +36,11 @@ export const Header = styled.header`
   margin-bottom: 1rem;
   z-index: 10;
   border: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+  }
 `
 
 export const SearchInput = styled.input`
@@ -41,6 +54,11 @@ export const SearchInput = styled.input`
   outline: none;
   box-sizing: border-box;
 
+  @media (max-width: 480px) {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary};
   }
@@ -50,6 +68,10 @@ export const UserList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 `
 
 export const UserCard = styled.div`
@@ -62,6 +84,13 @@ export const UserCard = styled.div`
   padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, background 0.2s ease;
+  gap: 0.75k;
+
+  @media (max-width: 480px) {
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    gap: 0.5rem;
+  }
 
   &:hover {
     background: ${({ theme }) => theme.colors.cardBackgroundHover};
@@ -74,11 +103,18 @@ export const UserDetails = styled.div`
   align-items: center;
   gap: 0.875rem;
   cursor: pointer;
+  min-width: 0;
+  flex: 1;
+
+  @media (max-width: 480px) {
+    gap: 0.6rem;
+  }
 `
 
 export const UserAvatar = styled.div`
   width: 44px;
   height: 44px;
+  min-width: 44px;
   border-radius: 50%;
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.border};
@@ -87,6 +123,12 @@ export const UserAvatar = styled.div`
   justify-content: center;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: 480px) {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+  }
 
   img {
     width: 100%;
@@ -98,10 +140,19 @@ export const UserAvatar = styled.div`
 export const UserNames = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
 
   strong {
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+    }
 
     &:hover {
       text-decoration: underline;
@@ -111,6 +162,13 @@ export const UserNames = styled.div`
   span {
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 `
 
@@ -126,6 +184,13 @@ export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
   min-width: 140px;
   text-align: center;
   transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    min-width: 105px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
 
   .text-default {
     display: inline;
@@ -164,4 +229,10 @@ export const FeedbackMessage = styled.p`
   background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 20px;
   border: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: 480px) {
+    padding: 2rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 14px;
+  }
 `

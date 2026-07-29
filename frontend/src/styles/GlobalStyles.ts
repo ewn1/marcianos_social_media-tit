@@ -13,6 +13,9 @@ export const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+    /* Remove o quadrado/fundo azul/cinza padrão ao tocar em elementos no mobile */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -34,10 +37,17 @@ export const GlobalStyle = createGlobalStyle`
     border: none;
     border-radius: 9999px;
     font-weight: bold;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
 
     &:hover:not(:disabled) {
       opacity: 0.9;
+    }
+
+    /* Efeito de clique exclusivo para telas mobile (até 768px ou 480px) */
+    @media (max-width: 768px) {
+      &:active:not(:disabled) {
+        transform: scale(0.97);
+      }
     }
   }
 

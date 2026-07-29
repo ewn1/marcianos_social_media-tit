@@ -7,6 +7,10 @@ export const LayoutContainer = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding-bottom: 70px; /* Espaço para a barra de navegação inferior */
+  }
 `
 
 export const FeedContainer = styled.main`
@@ -16,6 +20,10 @@ export const FeedContainer = styled.main`
   min-height: 100vh;
   box-sizing: border-box;
   padding: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+  }
 `
 
 export const Header = styled.header`
@@ -29,10 +37,19 @@ export const Header = styled.header`
   z-index: 10;
   border: 1px solid ${({ theme }) => theme.colors.border};
 
+  @media (max-width: 480px) {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+  }
+
   h2 {
     font-size: 1.25rem;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.text};
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 `
 
@@ -44,6 +61,12 @@ export const CreateTitBox = styled.form`
   margin-bottom: 1.5rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
+
   textarea {
     width: 100%;
     background: transparent;
@@ -54,6 +77,11 @@ export const CreateTitBox = styled.form`
     outline: none;
     min-height: 80px;
     font-family: inherit;
+
+    @media (max-width: 480px) {
+      font-size: 0.95rem;
+      min-height: 70px;
+    }
 
     &::placeholder {
       color: ${({ theme }) => theme.colors.textSecondary};
@@ -81,6 +109,12 @@ export const PublishButton = styled.button`
   cursor: pointer;
   transition: opacity 0.2s;
 
+  @media (max-width: 480px) {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    width: 100%;
+  }
+
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.primaryHover};
   }
@@ -102,6 +136,12 @@ export const PostCard = styled.div`
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, background 0.2s ease;
 
+  @media (max-width: 480px) {
+    padding: 0.85rem;
+    border-radius: 12px;
+    gap: 0.5rem;
+  }
+
   &:hover {
     background: ${({ theme }) => theme.colors.cardBackgroundHover};
     border-color: ${({ theme }) => theme.colors.border};
@@ -111,6 +151,7 @@ export const PostCard = styled.div`
 export const PostAvatar = styled.div`
   width: 44px;
   height: 44px;
+  min-width: 44px;
   border-radius: 50%;
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.border};
@@ -120,6 +161,12 @@ export const PostAvatar = styled.div`
   justify-content: center;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: 480px) {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
 
   img {
     width: 100%;
@@ -133,6 +180,7 @@ export const PostContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
 `
 
 export const PostHeader = styled.div`
@@ -140,10 +188,15 @@ export const PostHeader = styled.div`
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.25rem;
+  flex-wrap: wrap;
 
   strong {
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+    }
 
     &:hover {
       text-decoration: underline;
@@ -153,6 +206,10 @@ export const PostHeader = styled.div`
   span {
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 `
 
@@ -161,12 +218,20 @@ export const PostBody = styled.p`
   font-size: 0.95rem;
   line-height: 1.5;
   word-break: break-word;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `
 
 export const PostFooter = styled.div`
   display: flex;
   gap: 1.5rem;
   margin-top: 0.875rem;
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+  }
 `
 
 export const LikeButton = styled.button<{ $isLiked?: boolean }>`
@@ -236,6 +301,10 @@ export const CommentBox = styled.form`
   display: flex;
   gap: 0.5rem;
 
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+
   input {
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
@@ -245,6 +314,11 @@ export const CommentBox = styled.form`
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.85rem;
     outline: none;
+
+    @media (max-width: 480px) {
+      border-radius: 8px;
+      padding: 0.5rem 0.8rem;
+    }
 
     &:focus {
       border-color: ${({ theme }) => theme.colors.primary};
@@ -260,6 +334,12 @@ export const CommentBox = styled.form`
     font-weight: 600;
     font-size: 0.85rem;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+      border-radius: 8px;
+      padding: 0.5rem;
+      width: 100%;
+    }
 
     &:disabled {
       opacity: 0.5;
@@ -277,6 +357,7 @@ export const CommentItem = styled.div`
   border-radius: 12px;
   padding: 0.6rem 0.875rem;
   font-size: 0.85rem;
+  word-break: break-word;
 
   strong {
     color: ${({ theme }) => theme.colors.text};
@@ -295,4 +376,10 @@ export const EmptyStateText = styled.p`
   background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 20px;
   border: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: 480px) {
+    padding: 2rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 14px;
+  }
 `

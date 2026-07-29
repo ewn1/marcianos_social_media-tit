@@ -12,6 +12,10 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+  }
 `
 
 export const ModalContent = styled.div`
@@ -23,6 +27,11 @@ export const ModalContent = styled.div`
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: 480px) {
+    padding: 16px;
+    border-radius: 12px;
+  }
 `
 
 export const ModalHeader = styled.div`
@@ -35,6 +44,10 @@ export const ModalHeader = styled.div`
     font-size: 1.25rem;
     font-weight: bold;
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 
   button {
@@ -68,6 +81,11 @@ export const EditForm = styled.form`
     font-size: 1rem;
     outline: none;
 
+    @media (max-width: 480px) {
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+
     &:focus {
       border-color: ${({ theme }) => theme.colors.primary};
     }
@@ -79,6 +97,10 @@ export const EditLabel = styled.label`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-top: 4px;
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `
 
 export const ButtonGroup = styled.div`
@@ -86,6 +108,12 @@ export const ButtonGroup = styled.div`
   gap: 10px;
   margin-top: 15px;
   align-items: center;
+
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+    width: 100%;
+    gap: 8px;
+  }
 `
 
 export const SaveButton = styled.button`
@@ -98,6 +126,12 @@ export const SaveButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.primaryHover};
@@ -117,6 +151,13 @@ export const CancelButton = styled.button`
   font-weight: bold;
   font-size: 0.95rem;
   padding: 8px 12px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 
   &:hover {
     color: ${({ theme }) => theme.colors.text};
