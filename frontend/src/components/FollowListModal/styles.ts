@@ -14,8 +14,8 @@ export const ModalOverlay = styled.div`
 `
 
 export const ModalContainer = styled.div`
-  background-color: #15202b;
-  border: 1px solid #38444d;
+  background-color: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 16px;
   width: 100%;
   max-width: 400px;
@@ -30,23 +30,23 @@ export const ModalHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #38444d;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   h3 {
-    color: #fff;
+    color: ${({ theme }) => theme.colors.text};
     font-size: 1.1rem;
   }
 
   button {
     background: transparent;
     border: none;
-    color: #8899a6;
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 1.25rem;
     cursor: pointer;
     transition: color 0.2s;
 
     &:hover {
-      color: #fff;
+      color: ${({ theme }) => theme.colors.text};
     }
   }
 `
@@ -66,7 +66,7 @@ export const UserItem = styled.div`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
 `
 
@@ -81,11 +81,11 @@ export const UserAvatar = styled.div`
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #38444d;
+  background-color: ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
 
   img {
@@ -100,7 +100,7 @@ export const UserDetails = styled.div`
   flex-direction: column;
 
   strong {
-    color: #fff;
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
     &:hover {
       text-decoration: underline;
@@ -108,7 +108,7 @@ export const UserDetails = styled.div`
   }
 
   span {
-    color: #8899a6;
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
   }
 `

@@ -15,14 +15,14 @@ export const ModalOverlay = styled.div`
 `
 
 export const ModalContent = styled.div`
-  background: var(--background, #15202b);
-  border: 1px solid var(--border, #38444d);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 16px;
   width: 100%;
   max-width: 420px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  color: var(--text, #fff);
+  color: ${({ theme }) => theme.colors.text};
 `
 
 export const ModalHeader = styled.div`
@@ -40,7 +40,7 @@ export const ModalHeader = styled.div`
   button {
     background: transparent;
     border: none;
-    color: var(--text-secondary, #8899a6);
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 1.2rem;
     cursor: pointer;
     padding: 4px 8px;
@@ -48,7 +48,7 @@ export const ModalHeader = styled.div`
 
     &:hover {
       background: rgba(255, 255, 255, 0.1);
-      color: var(--text, #fff);
+      color: ${({ theme }) => theme.colors.text};
     }
   }
 `
@@ -62,14 +62,14 @@ export const EditForm = styled.form`
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid var(--border, #38444d);
-    background: var(--input-bg, #22303c);
-    color: var(--text, #fff);
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 1rem;
     outline: none;
 
     &:focus {
-      border-color: var(--primary, #1da1f2);
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 `
@@ -77,12 +77,12 @@ export const EditForm = styled.form`
 export const EditLabel = styled.label`
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-secondary, #8899a6);
+  color: ${({ theme }) => theme.colors.textSecondary};
   margin-top: 4px;
 `
 
 export const SaveButton = styled.button`
-  background-color: var(--primary, #1da1f2);
+  background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
   border: none;
   border-radius: 9999px;
@@ -93,7 +93,7 @@ export const SaveButton = styled.button`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: var(--primary-hover, #1a91da);
+    background-color: ${({ theme }) => theme.colors.primaryHover};
   }
 
   &:disabled {

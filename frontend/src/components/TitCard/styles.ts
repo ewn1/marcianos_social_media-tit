@@ -3,15 +3,15 @@ import styled from 'styled-components'
 export const PostCard = styled.div`
   display: flex;
   padding: 1.25rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 16px;
   margin-bottom: 1rem;
   gap: 0.75rem;
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #1a1d21; /* Leve destaque ao passar o mouse, opcional */
+    background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
 `
 
@@ -20,7 +20,7 @@ export const PostAvatar = styled.div`
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #2f3336;
+  background-color: ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
 
   img {
@@ -36,7 +36,7 @@ export const AvatarFallback = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
 `
 
@@ -51,7 +51,7 @@ export const PostHeader = styled.div`
   margin-bottom: 0.25rem;
 
   strong {
-    color: #e7e9ea;
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
     &:hover {
       text-decoration: underline;
@@ -59,13 +59,13 @@ export const PostHeader = styled.div`
   }
 
   span {
-    color: #71767b;
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
   }
 `
 
 export const PostBody = styled.p`
-  color: #e7e9ea;
+  color: ${({ theme }) => theme.colors.text};
   font-size: 0.95rem;
   line-height: 1.4;
   word-break: break-word;
@@ -75,7 +75,7 @@ export const PostBody = styled.p`
 export const PostFooter = styled.div`
   display: flex;
   gap: 2rem;
-  color: #71767b;
+  color: ${({ theme }) => theme.colors.textSecondary};
 `
 
 interface LikeButtonProps {
@@ -88,7 +88,7 @@ export const LikeButton = styled.button<LikeButtonProps>`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: ${(props) => (props.$isLiked ? '#f91880' : '#71767b')};
+  color: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : theme.colors.textSecondary)};
   cursor: pointer;
   font-size: 0.85rem;
   transition: color 0.2s;
@@ -96,13 +96,13 @@ export const LikeButton = styled.button<LikeButtonProps>`
   svg {
     width: 18px;
     height: 18px;
-    fill: ${(props) => (props.$isLiked ? '#f91880' : 'currentColor')};
+    fill: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'currentColor')};
   }
 
   &:hover {
-    color: #f91880;
+    color: ${({ theme }) => theme.colors.like};
     svg {
-      fill: #f91880;
+      fill: ${({ theme }) => theme.colors.like};
     }
   }
 `
@@ -113,7 +113,7 @@ export const CommentButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: #71767b;
+  color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
   font-size: 0.85rem;
   transition: color 0.2s;
@@ -125,13 +125,13 @@ export const CommentButton = styled.button`
   }
 
   &:hover {
-    color: #1d9bf0;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 
 export const CommentsSection = styled.div`
   margin-top: 0.75rem;
-  border-top: 1px solid #2f3336;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   padding-top: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -144,21 +144,21 @@ export const CommentBox = styled.form`
 
   input {
     flex: 1;
-    background: #101214; /* Fundo mais escuro para o input interno */
-    border: 1px solid #2f3336;
+    background: ${({ theme }) => theme.colors.background};
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 9999px;
     padding: 0.4rem 0.9rem;
-    color: #e7e9ea;
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.85rem;
 
     &:focus {
       outline: none;
-      border-color: #1d9bf0;
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
   button {
-    background: #1d9bf0;
+    background: ${({ theme }) => theme.colors.primary};
     color: #fff;
     border: none;
     border-radius: 9999px;
@@ -173,19 +173,19 @@ export const CommentBox = styled.form`
     }
 
     &:hover:not(:disabled) {
-      background: #1a8cd8;
+      background: ${({ theme }) => theme.colors.primaryHover};
     }
   }
 `
 
 export const CommentItem = styled.div`
   font-size: 0.85rem;
-  color: #e7e9ea;
-  background: #101214;
+  color: ${({ theme }) => theme.colors.text};
+  background: ${({ theme }) => theme.colors.background};
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
 
   strong {
-    color: #1d9bf0;
+    color: ${({ theme }) => theme.colors.primary};
   }
 `

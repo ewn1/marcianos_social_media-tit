@@ -27,22 +27,22 @@ export const Header = styled.header`
   border-radius: 16px;
   margin-bottom: 1rem;
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 export const SearchInput = styled.input`
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 9999px;
   padding: 0.75rem 1.25rem;
-  color: ${({ theme }) => theme.colors?.text || '#fff'};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 0.95rem;
   outline: none;
   box-sizing: border-box;
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -56,16 +56,16 @@ export const UserCard = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 20px;
   padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: ${({ theme }) => theme.colors.cardBackgroundHover};
+    border-color: ${({ theme }) => theme.colors.border};
   }
 `
 
@@ -81,12 +81,12 @@ export const UserAvatar = styled.div`
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.text};
 
   img {
     width: 100%;
@@ -100,7 +100,7 @@ export const UserNames = styled.div`
   flex-direction: column;
 
   strong {
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
 
     &:hover {
@@ -109,15 +109,15 @@ export const UserNames = styled.div`
   }
 
   span {
-    color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.875rem;
   }
 `
 
 export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
-  background-color: ${({ $isFollowing }) => ($isFollowing ? 'transparent' : '#fff')};
-  color: ${({ $isFollowing }) => ($isFollowing ? '#fff' : '#000')};
-  border: 1px solid ${({ $isFollowing }) => ($isFollowing ? 'rgba(255, 255, 255, 0.2)' : 'transparent')};
+  background-color: ${({ theme, $isFollowing }) => ($isFollowing ? 'transparent' : theme.colors.text)};
+  color: ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.text : theme.colors.background)};
+  border: 1px solid ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.border : 'transparent')};
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   font-weight: 700;
@@ -136,12 +136,12 @@ export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
   }
 
   &:hover {
-    ${({ $isFollowing }) =>
+    ${({ theme, $isFollowing }) =>
       $isFollowing
         ? `
         background-color: rgba(244, 33, 46, 0.1) !important;
-        color: #f4212e !important;
-        border-color: #f4212e !important;
+        color: ${theme.colors.danger} !important;
+        border-color: ${theme.colors.danger} !important;
 
         .text-default {
           display: none;
@@ -159,9 +159,9 @@ export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
 export const FeedbackMessage = styled.p`
   text-align: center;
   padding: 3rem 1rem;
-  color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `

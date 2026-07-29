@@ -27,7 +27,7 @@ export const Header = styled.header`
   border-radius: 16px;
   margin-bottom: 1rem;
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -35,14 +35,14 @@ export const Header = styled.header`
   h2 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     margin: 0;
   }
 `
 
 export const ProfileHeader = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 20px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -61,14 +61,14 @@ export const AvatarImage = styled.div`
   height: 90px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
   font-weight: bold;
-  color: #fff;
-  border: 4px solid rgba(255, 255, 255, 0.1);
+  color: ${({ theme }) => theme.colors.text};
+  border: 4px solid ${({ theme }) => theme.colors.border};
 
   img {
     width: 100%;
@@ -79,8 +79,8 @@ export const AvatarImage = styled.div`
 
 export const EditProfileButton = styled.button`
   background: transparent;
-  color: ${({ theme }) => theme.colors.text || '#fff'};
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 9999px;
   padding: 0.5rem 1rem;
   font-weight: 700;
@@ -89,24 +89,24 @@ export const EditProfileButton = styled.button`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
 `
 
 export const UserInfo = styled.div`
   h3 {
-    color: ${({ theme }) => theme.colors.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 1.25rem;
     margin: 0;
   }
 
   span {
-    color: ${({ theme }) => theme.colors.textSecondary || '#71767b'};
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.9rem;
   }
 
   p {
-    color: ${({ theme }) => theme.colors.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
     margin: 0.75rem 0;
     line-height: 1.4;
@@ -118,10 +118,10 @@ export const StatsContainer = styled.div`
   gap: 1.25rem;
   margin-top: 0.75rem;
   font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.textSecondary || '#71767b'};
+  color: ${({ theme }) => theme.colors.textSecondary};
 
   strong {
-    color: ${({ theme }) => theme.colors.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
   }
 `
 
@@ -131,21 +131,21 @@ export const EditForm = styled.form`
   gap: 1rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 
   input,
   textarea {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: ${({ theme }) => theme.colors.background};
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 12px;
     padding: 0.75rem;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.text};
     font-family: inherit;
     font-size: 0.95rem;
     outline: none;
 
     &:focus {
-      border-color: ${({ theme }) => theme.colors.primary || '#1d9bf0'};
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -157,11 +157,11 @@ export const EditForm = styled.form`
 
 export const EditLabel = styled.label`
   font-size: 0.85rem;
-  color: ${({ theme }) => theme.colors.textSecondary || '#71767b'};
+  color: ${({ theme }) => theme.colors.textSecondary};
 `
 
 export const SaveButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary || '#1d9bf0'};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
   border: none;
   border-radius: 9999px;
@@ -169,6 +169,11 @@ export const SaveButton = styled.button`
   font-weight: bold;
   align-self: flex-end;
   cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
 
   &:disabled {
     opacity: 0.6;
@@ -177,9 +182,9 @@ export const SaveButton = styled.button`
 `
 
 export const FollowActionButton = styled.button<{ $isFollowing?: boolean }>`
-  background-color: ${({ $isFollowing }) => ($isFollowing ? 'transparent' : '#fff')};
-  color: ${({ $isFollowing }) => ($isFollowing ? '#fff' : '#000')};
-  border: 1px solid ${({ $isFollowing }) => ($isFollowing ? 'rgba(255, 255, 255, 0.2)' : 'transparent')};
+  background-color: ${({ theme, $isFollowing }) => ($isFollowing ? 'transparent' : theme.colors.text)};
+  color: ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.text : theme.colors.background)};
+  border: 1px solid ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.border : 'transparent')};
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   font-weight: 700;
@@ -197,12 +202,12 @@ export const FollowActionButton = styled.button<{ $isFollowing?: boolean }>`
   }
 
   &:hover {
-    ${({ $isFollowing }) =>
+    ${({ theme, $isFollowing }) =>
       $isFollowing
         ? `
         background-color: rgba(244, 33, 46, 0.1) !important;
-        color: #f4212e !important;
-        border-color: #f4212e !important;
+        color: ${theme.colors.danger} !important;
+        border-color: ${theme.colors.danger} !important;
 
         .text-default {
           display: none;
@@ -229,25 +234,24 @@ export const AvatarFallback = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.cardBackground || '#16181c'};
-  color: ${({ theme }) => theme.colors.text || '#fff'};
+  background-color: ${({ theme }) => theme.colors.cardBackground};
+  color: ${({ theme }) => theme.colors.text};
   font-weight: bold;
 `
 
-/* Estilos de Cards de Posts / Tits no Perfil (Padronizados com a Home) */
 export const PostCard = styled.div`
   display: flex;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 20px;
   padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: ${({ theme }) => theme.colors.cardBackgroundHover};
+    border-color: ${({ theme }) => theme.colors.border};
   }
 `
 
@@ -256,13 +260,13 @@ export const PostAvatar = styled.div`
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.text};
 
   img {
     width: 100%;
@@ -285,7 +289,7 @@ export const PostHeader = styled.div`
   margin-bottom: 0.25rem;
 
   strong {
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
 
     &:hover {
@@ -294,13 +298,13 @@ export const PostHeader = styled.div`
   }
 
   span {
-    color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
   }
 `
 
 export const PostBody = styled.p`
-  color: ${({ theme }) => theme.colors?.text || '#fff'};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 0.95rem;
   line-height: 1.5;
   word-break: break-word;
@@ -319,22 +323,22 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
-  color: ${({ $isLiked }) => ($isLiked ? '#f91880' : '#71767b')};
+  color: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : theme.colors.textSecondary)};
   font-size: 0.85rem;
   transition: color 0.2s;
 
   svg {
     width: 18px;
     height: 18px;
-    fill: ${({ $isLiked }) => ($isLiked ? '#f91880' : 'none')};
-    stroke: ${({ $isLiked }) => ($isLiked ? '#f91880' : 'currentColor')};
+    fill: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'none')};
+    stroke: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'currentColor')};
     stroke-width: 2;
   }
 
   &:hover {
-    color: #f91880;
+    color: ${({ theme }) => theme.colors.like};
     svg {
-      stroke: #f91880;
+      stroke: ${({ theme }) => theme.colors.like};
     }
   }
 `
@@ -346,7 +350,7 @@ export const CommentButton = styled.button`
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
-  color: #71767b;
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.85rem;
   transition: color 0.2s;
 
@@ -359,9 +363,9 @@ export const CommentButton = styled.button`
   }
 
   &:hover {
-    color: #1d9bf0;
+    color: ${({ theme }) => theme.colors.primary};
     svg {
-      stroke: #1d9bf0;
+      stroke: ${({ theme }) => theme.colors.primary};
     }
   }
 `
@@ -369,7 +373,7 @@ export const CommentButton = styled.button`
 export const CommentsSection = styled.div`
   margin-top: 1rem;
   padding-top: 0.875rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -381,21 +385,21 @@ export const CommentBox = styled.form`
 
   input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: ${({ theme }) => theme.colors.background};
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 9999px;
     padding: 0.5rem 1rem;
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.85rem;
     outline: none;
 
     &:focus {
-      border-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
   button {
-    background-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+    background-color: ${({ theme }) => theme.colors.primary};
     color: #fff;
     border: none;
     border-radius: 9999px;
@@ -412,26 +416,26 @@ export const CommentBox = styled.form`
 `
 
 export const CommentItem = styled.div`
-  background: rgba(255, 255, 255, 0.02);
+  background: ${({ theme }) => theme.colors.background};
   border-radius: 12px;
   padding: 0.6rem 0.875rem;
   font-size: 0.85rem;
 
   strong {
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
   }
 
   span {
-    color: ${({ theme }) => theme.colors?.textSecondary || '#adb5bd'};
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
 `
 
 export const EmptyStateText = styled.p`
   text-align: center;
   padding: 3rem 1rem;
-  color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `

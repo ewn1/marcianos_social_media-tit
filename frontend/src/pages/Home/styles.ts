@@ -13,7 +13,6 @@ export const FeedContainer = styled.main`
   width: 100%;
   max-width: 600px;
   min-width: 320px;
-  /* Removemos as bordas laterais retas da timeline antiga */
   min-height: 100vh;
   box-sizing: border-box;
   padding: 1rem;
@@ -28,19 +27,18 @@ export const Header = styled.header`
   border-radius: 16px;
   margin-bottom: 1rem;
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
 
   h2 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
   }
 `
 
 export const CreateTitBox = styled.form`
-  /* Estilo de card flutuante moderno para a caixa de postagem */
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 20px;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
@@ -51,14 +49,14 @@ export const CreateTitBox = styled.form`
     background: transparent;
     border: none;
     resize: none;
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 1rem;
     outline: none;
     min-height: 80px;
     font-family: inherit;
 
     &::placeholder {
-      color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+      color: ${({ theme }) => theme.colors.textSecondary};
     }
   }
 `
@@ -69,11 +67,11 @@ export const PublishActions = styled.div`
   align-items: center;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 export const PublishButton = styled.button`
-  background-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
   border: none;
   border-radius: 9999px;
@@ -84,7 +82,7 @@ export const PublishButton = styled.button`
   transition: opacity 0.2s;
 
   &:hover:not(:disabled) {
-    opacity: 0.9;
+    background-color: ${({ theme }) => theme.colors.primaryHover};
   }
 
   &:disabled {
@@ -94,11 +92,10 @@ export const PublishButton = styled.button`
 `
 
 export const PostCard = styled.div`
-  /* O card do post agora flutua como uma notificação do iOS */
   display: flex;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: ${({ theme }) => theme.colors.cardBackground};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 20px;
   padding: 1.25rem;
   margin-bottom: 1rem;
@@ -106,8 +103,8 @@ export const PostCard = styled.div`
   transition: transform 0.2s ease, background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: ${({ theme }) => theme.colors.cardBackgroundHover};
+    border-color: ${({ theme }) => theme.colors.border};
   }
 `
 
@@ -116,13 +113,13 @@ export const PostAvatar = styled.div`
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.colors.border};
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.text};
 
   img {
     width: 100%;
@@ -135,7 +132,7 @@ export const PostContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5s;
+  gap: 0.5rem;
 `
 
 export const PostHeader = styled.div`
@@ -145,7 +142,7 @@ export const PostHeader = styled.div`
   margin-bottom: 0.25rem;
 
   strong {
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.95rem;
 
     &:hover {
@@ -154,13 +151,13 @@ export const PostHeader = styled.div`
   }
 
   span {
-    color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 0.85rem;
   }
 `
 
 export const PostBody = styled.p`
-  color: ${({ theme }) => theme.colors?.text || '#fff'};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 0.95rem;
   line-height: 1.5;
   word-break: break-word;
@@ -179,22 +176,22 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
-  color: ${({ $isLiked }) => ($isLiked ? '#f91880' : '#71767b')};
+  color: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : theme.colors.textSecondary)};
   font-size: 0.85rem;
   transition: color 0.2s;
 
   svg {
     width: 18px;
     height: 18px;
-    fill: ${({ $isLiked }) => ($isLiked ? '#f91880' : 'none')};
-    stroke: ${({ $isLiked }) => ($isLiked ? '#f91880' : 'currentColor')};
+    fill: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'none')};
+    stroke: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'currentColor')};
     stroke-width: 2;
   }
 
   &:hover {
-    color: #f91880;
+    color: ${({ theme }) => theme.colors.like};
     svg {
-      stroke: #f91880;
+      stroke: ${({ theme }) => theme.colors.like};
     }
   }
 `
@@ -206,7 +203,7 @@ export const CommentButton = styled.button`
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
-  color: #71767b;
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.85rem;
   transition: color 0.2s;
 
@@ -219,9 +216,9 @@ export const CommentButton = styled.button`
   }
 
   &:hover {
-    color: #1d9bf0;
+    color: ${({ theme }) => theme.colors.primary};
     svg {
-      stroke: #1d9bf0;
+      stroke: ${({ theme }) => theme.colors.primary};
     }
   }
 `
@@ -229,7 +226,7 @@ export const CommentButton = styled.button`
 export const CommentsSection = styled.div`
   margin-top: 1rem;
   padding-top: 0.875rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -241,21 +238,21 @@ export const CommentBox = styled.form`
 
   input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: ${({ theme }) => theme.colors.background};
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 9999px;
     padding: 0.5rem 1rem;
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 0.85rem;
     outline: none;
 
     &:focus {
-      border-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   }
 
   button {
-    background-color: ${({ theme }) => theme.colors?.primary || '#1d9bf0'};
+    background-color: ${({ theme }) => theme.colors.primary};
     color: #fff;
     border: none;
     border-radius: 9999px;
@@ -268,30 +265,34 @@ export const CommentBox = styled.form`
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    &:hover:not(:disabled) {
+      background-color: ${({ theme }) => theme.colors.primaryHover};
+    }
   }
 `
 
 export const CommentItem = styled.div`
-  background: rgba(255, 255, 255, 0.02);
+  background: ${({ theme }) => theme.colors.background};
   border-radius: 12px;
   padding: 0.6rem 0.875rem;
   font-size: 0.85rem;
 
   strong {
-    color: ${({ theme }) => theme.colors?.text || '#fff'};
+    color: ${({ theme }) => theme.colors.text};
   }
 
   span {
-    color: ${({ theme }) => theme.colors?.textSecondary || '#adb5bd'};
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
 `
 
 export const EmptyStateText = styled.p`
   text-align: center;
   padding: 3rem 1rem;
-  color: ${({ theme }) => theme.colors?.textSecondary || '#71767b'};
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: ${({ theme }) => theme.colors.cardBackground};
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `

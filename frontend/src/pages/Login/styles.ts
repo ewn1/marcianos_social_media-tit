@@ -40,6 +40,21 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 1rem;
+    outline: none;
+
+    &:focus {
+      border-color: ${({ theme }) => theme.colors.primary};
+    }
+  }
 `
 
 export const InputGroup = styled.div`
@@ -57,9 +72,18 @@ export const InputGroup = styled.div`
 export const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
   color: #ffffff;
+  border: none;
+  border-radius: 9999px;
   padding: 14px;
   font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
   margin-top: 10px;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
 
   &:disabled {
     opacity: 0.5;

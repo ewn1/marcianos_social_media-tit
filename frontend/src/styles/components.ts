@@ -1,31 +1,21 @@
-import styled from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
-export const FullScreenLoading = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 18px;
-  font-weight: 600;
-`
-
-export const PagePlaceholder = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 40px;
-  color: ${({ theme }) => theme.colors.text};
-
-  h1 {
-    font-size: 28px;
-    font-weight: 800;
+export const GlobalStyle = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  p {
-    color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: 15px;
+  body {
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button, input, textarea {
+    font-family: inherit;
   }
 `

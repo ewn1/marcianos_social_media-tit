@@ -9,7 +9,8 @@ export const Container = styled.aside`
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 16px;
-  /* Linha divisória antiga removida para acompanhar o novo design system */
+  border-right: 1px solid ${({ theme }) => theme.colors.border};
+  /* Linha divisória antiga integrada ao novo design system */
 `
 
 export const TopSection = styled.div`
@@ -47,7 +48,7 @@ export const NavItem = styled.div<{ $active?: boolean }>`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
 
   svg {
@@ -62,9 +63,10 @@ export const UserProfileSection = styled.div`
   padding: 12px;
   border-radius: 9999px;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: ${({ theme }) => theme.colors.cardBackgroundHover};
   }
 `
 
@@ -85,12 +87,15 @@ export const UserInfo = styled.div`
 
 export const LogoutButton = styled.button`
   background: transparent;
+  border: none;
   color: ${({ theme }) => theme.colors.danger};
   padding: 8px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: rgba(244, 33, 46, 0.1);
