@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Sidebar } from '../../components/Sidebar'
 import { TitCard } from '../../components/TitCard'
 import { FollowListModal } from '../../components/FollowListModal'
+import { ChangePasswordModal } from '../../components/ChangePasswordModal'
 import api from '../../services/api'
 import { Profile, Tit } from '../../types'
 import {
@@ -32,13 +33,14 @@ export function ProfilePage() {
   const [userTits, setUserTits] = useState<Tit[]>([])
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
   // Estados do Modal de Seguidores/Seguindo
   const [modalType, setModalType] = useState<'followers' | 'following' | null>(null)
   const [modalUsers, setModalUsers] = useState<Profile[]>([])
   const [loadingModal, setLoadingModal] = useState(false)
 
-  // Formulário de edição
+  // Formulário de edição de perfil
   const [displayName, setDisplayName] = useState('')
   const [bio, setBio] = useState('')
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
@@ -113,6 +115,7 @@ export function ProfilePage() {
         formData.append('avatar', avatarFile)
       }
 
+      // Atualiza dados do perfil via PATCH
       const response = await api.patch<Profile>(
         `profiles/${profile.username}/`,
         formData,
@@ -124,11 +127,15 @@ export function ProfilePage() {
       )
 
       setProfile(response.data)
+      alert('Perfil atualizado com sucesso!')
+
       setAvatarFile(null)
       setAvatarPreview(null)
       setIsEditing(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao atualizar perfil:', error)
+      const errorMsg = error.response?.data?.error || error.response?.data?.detail || 'Erro ao atualizar dados.'
+      alert(errorMsg)
     } finally {
       setIsSaving(false)
     }
@@ -245,31 +252,51 @@ export function ProfilePage() {
           </UserInfo>
 
           {isEditing && isOwnProfile && (
-            <EditForm onSubmit={handleSaveProfile}>
-              <EditLabel>Foto de perfil:</EditLabel>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-              />
+            <>
+              <EditForm onSubmit={handleSaveProfile}>
+                <EditLabel>Foto de perfil:</EditLabel>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                />
 
-              <input
-                type="text"
-                placeholder="Nome de exibição"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-              />
+                <input
+                  type="text"
+                  placeholder="Nome de exibição"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                />
 
-              <textarea
-                placeholder="Escreva sua bio marciana..."
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-              />
+                <textarea
+                  placeholder="Escreva sua bio marciana..."
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                />
 
-              <SaveButton type="submit" disabled={isSaving}>
-                {isSaving ? 'Salvando...' : 'Salvar'}
-              </SaveButton>
-            </EditForm>
+                <SaveButton type="submit" disabled={isSaving}>
+                  {isSaving ? 'Salvando...' : 'Salvar perfil'}
+                </SaveButton>
+              </EditForm>
+
+              <div style={{ marginTop: '12px' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--primary, #1da1f2)',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontSize: '0.95rem',
+                    padding: 0,
+                  }}
+                >
+                  Alterar senha
+                </button>
+              </div>
+            </>
           )}
         </ProfileHeader>
 
@@ -297,6 +324,11 @@ export function ProfilePage() {
           onClose={() => setModalType(null)}
         />
       )}
+
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </LayoutContainer>
   )
 }
