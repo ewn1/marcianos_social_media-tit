@@ -39,6 +39,26 @@ Uma aplicação de rede social moderna desenvolvida com foco em performance, exp
 Certifique-se de ter o [Docker](https://www.docker.com/) e o [Docker Compose](https://docs.docker.com/compose/) instalados na sua máquina.
 
 1. Clone o repositório:
-   ```bash
    git clone [https://github.com/SEU_USUARIO/SEU_REPO.git](https://github.com/SEU_USUARIO/SEU_REPO.git)
    cd SEU_REPO
+   
+2. Configure o arquivo de variáveis de ambiente (.env) no diretório do backend com base no .env.example.
+
+3. Suba os containers da aplicação:
+
+4. `docker-compose up --build`
+
+O backend estará rodando e pronto para receber requisições integradas com o banco PostgreSQL.
+
+## Como Executar Localmente (Desenvolvimento)
+### Back-end:
+1. `cd backend`
+2. `poetry install`
+3. `poetry run python manage.py migrate`
+4. `poetry run python manage.py runserver`
+5. `python manage.py migrate`
+6. `python manage.py runserver`
+### Front-end:
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev`
