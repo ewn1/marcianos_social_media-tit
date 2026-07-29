@@ -39,7 +39,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
   const [commentsLoaded, setCommentsLoaded] = useState(false)
 
-  // Mapeamento dinâmico do autor (compatível com Home e Profile)
+  // Mapeamento dinâmico do autor para a Home e Profile
   const authorUsername =
     typeof tit.author === 'string'
       ? tit.author
@@ -111,6 +111,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
       })
 
       const commentData = response.data as any
+      
       const newComment = {
         ...commentData,
         author:
@@ -163,7 +164,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
 
           <CommentButton onClick={toggleComments}>
             <svg viewBox="0 0 24 24">
-              <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
+              <path d="M19.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
             </svg>
             <span>{commentsCount}</span>
           </CommentButton>
@@ -190,12 +191,11 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
             ) : (
               comments.map((comment: any) => {
                 const commentAuthor =
-                  typeof comment.author === 'string'
-                    ? comment.author
-                    : comment.author?.username ||
-                      comment.user?.username ||
-                      currentUser?.username ||
-                      'codefather'
+                  typeof comment.user === 'string'
+                    ? comment.user
+                    : comment.user?.username ||
+                    comment.author ||
+                    'desconhecido'
 
                 return (
                   <CommentItem key={comment.id}>
