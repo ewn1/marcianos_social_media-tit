@@ -28,7 +28,10 @@ export function Sidebar() {
         <Logo>True is Tough</Logo>
 
         <NavMenu>
-          <NavItem $active={location.pathname === '/'} onClick={() => navigate('/')}>
+          <NavItem
+            $active={location.pathname === '/'}
+            onClick={() => navigate('/')}
+          >
             <Home size={24} />
             <span>Feed</span>
           </NavItem>

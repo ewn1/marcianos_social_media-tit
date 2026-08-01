@@ -301,9 +301,13 @@ export const PasswordButton = styled.button`
 `
 
 export const FollowActionButton = styled.button<{ $isFollowing?: boolean }>`
-  background-color: ${({ theme, $isFollowing }) => ($isFollowing ? 'transparent' : theme.colors.text)};
-  color: ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.text : theme.colors.background)};
-  border: 1px solid ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.border : 'transparent')};
+  background-color: ${({ theme, $isFollowing }) =>
+    $isFollowing ? 'transparent' : theme.colors.text};
+  color: ${({ theme, $isFollowing }) =>
+    $isFollowing ? theme.colors.text : theme.colors.background};
+  border: 1px solid
+    ${({ theme, $isFollowing }) =>
+      $isFollowing ? theme.colors.border : 'transparent'};
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   font-weight: 700;

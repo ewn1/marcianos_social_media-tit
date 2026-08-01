@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
+
     /* Remove o quadrado/fundo azul/cinza padrão ao tocar em elementos no mobile */
     -webkit-tap-highlight-color: transparent;
   }

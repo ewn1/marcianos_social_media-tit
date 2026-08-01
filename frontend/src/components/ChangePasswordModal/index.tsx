@@ -16,7 +16,10 @@ interface ChangePasswordModalProps {
   onClose: () => void
 }
 
-export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProps) {
+export function ChangePasswordModal({
+  isOpen,
+  onClose,
+}: ChangePasswordModalProps) {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -42,7 +45,10 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
       onClose()
     } catch (error: any) {
       console.error('Erro ao alterar senha:', error)
-      const errorMsg = error.response?.data?.error || error.response?.data?.detail || 'Erro ao alterar senha.'
+      const errorMsg =
+        error.response?.data?.error ||
+        error.response?.data?.detail ||
+        'Erro ao alterar senha.'
       alert(errorMsg)
     } finally {
       setLoading(false)

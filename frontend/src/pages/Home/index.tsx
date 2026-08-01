@@ -63,7 +63,9 @@ export function Home() {
   }
 
   const handleUpdateTit = (updatedTit: Tit) => {
-    setPosts((prev) => prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)))
+    setPosts((prev) =>
+      prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)),
+    )
   }
 
   return (
@@ -81,7 +83,10 @@ export function Home() {
             onChange={(e) => setContent(e.target.value)}
           />
           <PublishActions>
-            <PublishButton type="submit" disabled={!content.trim() || isSubmitting}>
+            <PublishButton
+              type="submit"
+              disabled={!content.trim() || isSubmitting}
+            >
               {isSubmitting ? 'Publicando...' : 'Publicar Tit'}
             </PublishButton>
           </PublishActions>
@@ -91,8 +96,8 @@ export function Home() {
           <EmptyStateText>Carregando Tit's...</EmptyStateText>
         ) : !Array.isArray(posts) || posts.length === 0 ? (
           <EmptyStateText>
-            Nenhum Tit para visualizar. Siga outros titers para ver publicações aqui!
-            @codefather é uma ótima sugestão para começar a seguir :D
+            Nenhum Tit para visualizar. Siga outros titers para ver publicações
+            aqui! @codefather é uma ótima sugestão para começar a seguir :D
           </EmptyStateText>
         ) : (
           posts.map((post) => (

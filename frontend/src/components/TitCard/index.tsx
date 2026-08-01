@@ -63,14 +63,21 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
   const handleLike = async () => {
     try {
       const response = await api.post(`tits/${tit.id}/like/`)
-      const isNowLiked = response.status === 201 || response.data.message === 'Tit curtido!'
-      const newLikesCount = isNowLiked ? likesCount + 1 : Math.max(0, likesCount - 1)
+      const isNowLiked =
+        response.status === 201 || response.data.message === 'Tit curtido!'
+      const newLikesCount = isNowLiked
+        ? likesCount + 1
+        : Math.max(0, likesCount - 1)
 
       setIsLiked(isNowLiked)
       setLikesCount(newLikesCount)
 
       if (onUpdateTit) {
-        onUpdateTit({ ...tit, is_liked: isNowLiked, likes_count: newLikesCount })
+        onUpdateTit({
+          ...tit,
+          is_liked: isNowLiked,
+          likes_count: newLikesCount,
+        })
       }
     } catch (error) {
       console.error('Erro ao curtir Tit:', error)
@@ -111,7 +118,7 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
       })
 
       const commentData = response.data as any
-      
+
       const newComment = {
         ...commentData,
         author:
@@ -142,7 +149,9 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
         {avatarUrl ? (
           <img src={avatarUrl} alt={authorDisplayName} />
         ) : (
-          <AvatarFallback>{authorDisplayName[0]?.toUpperCase() || 'C'}</AvatarFallback>
+          <AvatarFallback>
+            {authorDisplayName[0]?.toUpperCase() || 'C'}
+          </AvatarFallback>
         )}
       </PostAvatar>
 
@@ -179,7 +188,10 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
               />
-              <button type="submit" disabled={!commentText.trim() || isSubmittingComment}>
+              <button
+                type="submit"
+                disabled={!commentText.trim() || isSubmittingComment}
+              >
                 Responder
               </button>
             </CommentBox>
@@ -193,14 +205,13 @@ export function TitCard({ tit, currentUser, onUpdateTit }: TitCardProps) {
                 const commentAuthor =
                   typeof comment.user === 'string'
                     ? comment.user
-                    : comment.user?.username ||
-                    comment.author ||
-                    'desconhecido'
+                    : comment.user?.username || comment.author || 'desconhecido'
 
                 return (
                   <CommentItem key={comment.id}>
                     <div>
-                      <strong>@{commentAuthor}:</strong> <span>{comment.content}</span>
+                      <strong>@{commentAuthor}:</strong>{' '}
+                      <span>{comment.content}</span>
                     </div>
                   </CommentItem>
                 )

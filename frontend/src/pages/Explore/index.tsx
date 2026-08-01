@@ -32,7 +32,9 @@ export function Explore() {
         setCurrentUser(response.data)
 
         // Busca a lista real de quem o usuário logado segue usando o endpoint da API
-        const followingResponse = await api.get(`profiles/${response.data.username}/following/`)
+        const followingResponse = await api.get(
+          `profiles/${response.data.username}/following/`,
+        )
         const followingData = Array.isArray(followingResponse.data)
           ? followingResponse.data
           : followingResponse.data.results || []
@@ -85,14 +87,16 @@ export function Explore() {
       await api.post(`profiles/${targetUsername}/follow/`)
 
       // Atualiza a lista de quem seguimos após clicar no botão
-      const followingResponse = await api.get(`profiles/${currentUser?.username}/following/`)
+      const followingResponse = await api.get(
+        `profiles/${currentUser?.username}/following/`,
+      )
       const followingData = Array.isArray(followingResponse.data)
         ? followingResponse.data
         : followingResponse.data.results || []
-      
+
       setMyFollowingIds(followingData.map((f: any) => f.id || f.username || f))
     } catch (err) {
-        console.error('Erro ao seguir/deixar de seguir:', err)
+      console.error('Erro ao seguir/deixar de seguir:', err)
     }
   }
 
@@ -124,7 +128,7 @@ export function Explore() {
               const isFollowing = myFollowingIds.some(
                 (idOrUser) =>
                   String(idOrUser) === String(profile.id) ||
-                  String(idOrUser) === String(username)
+                  String(idOrUser) === String(username),
               )
 
               return (

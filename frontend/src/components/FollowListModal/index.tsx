@@ -19,7 +19,12 @@ interface FollowListModalProps {
   onClose: () => void
 }
 
-export function FollowListModal({ title, users, loading, onClose }: FollowListModalProps) {
+export function FollowListModal({
+  title,
+  users,
+  loading,
+  onClose,
+}: FollowListModalProps) {
   const navigate = useNavigate()
 
   const handleUserClick = (username: string) => {
@@ -42,13 +47,18 @@ export function FollowListModal({ title, users, loading, onClose }: FollowListMo
             <EmptyStateText>Nenhum usuário encontrado.</EmptyStateText>
           ) : (
             users.map((user) => (
-              <UserItem key={user.id} onClick={() => handleUserClick(user.username)}>
+              <UserItem
+                key={user.id}
+                onClick={() => handleUserClick(user.username)}
+              >
                 <UserInfoWrapper>
                   <UserAvatar>
                     {user.avatar ? (
                       <img src={user.avatar} alt={user.username} />
                     ) : (
-                      user.display_name?.[0]?.toUpperCase() || user.username[0]?.toUpperCase() || 'U'
+                      user.display_name?.[0]?.toUpperCase() ||
+                      user.username[0]?.toUpperCase() ||
+                      'U'
                     )}
                   </UserAvatar>
                   <UserDetails>

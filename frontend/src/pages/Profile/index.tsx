@@ -40,7 +40,9 @@ export function ProfilePage() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
   // Estados do Modal de Seguidores/Seguindo
-  const [modalType, setModalType] = useState<'followers' | 'following' | null>(null)
+  const [modalType, setModalType] = useState<'followers' | 'following' | null>(
+    null,
+  )
   const [modalUsers, setModalUsers] = useState<Profile[]>([])
   const [loadingModal, setLoadingModal] = useState(false)
 
@@ -59,17 +61,23 @@ export function ProfilePage() {
         setCurrentUser(meResponse.data)
 
         // Busca a lista real de quem o usuário logado segue
-        const followingResponse = await api.get(`profiles/${meResponse.data.username}/following/`)
+        const followingResponse = await api.get(
+          `profiles/${meResponse.data.username}/following/`,
+        )
         const followingData = Array.isArray(followingResponse.data)
           ? followingResponse.data
           : followingResponse.data.results || []
-        
-        setMyFollowingIds(followingData.map((f: any) => f.id || f.username || f))
+
+        setMyFollowingIds(
+          followingData.map((f: any) => f.id || f.username || f),
+        )
 
         let targetProfile = meResponse.data
 
         if (username && username !== meResponse.data.username) {
-          const profileResponse = await api.get<Profile>(`profiles/${username}/`)
+          const profileResponse = await api.get<Profile>(
+            `profiles/${username}/`,
+          )
           targetProfile = profileResponse.data
         }
 
@@ -135,7 +143,7 @@ export function ProfilePage() {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        }
+        },
       )
 
       setProfile(response.data)
@@ -146,7 +154,10 @@ export function ProfilePage() {
       setIsEditing(false)
     } catch (error: any) {
       console.error('Erro ao atualizar perfil:', error)
-      const errorMsg = error.response?.data?.error || error.response?.data?.detail || 'Erro ao atualizar dados.'
+      const errorMsg =
+        error.response?.data?.error ||
+        error.response?.data?.detail ||
+        'Erro ao atualizar dados.'
       alert(errorMsg)
     } finally {
       setIsSaving(false)
@@ -183,8 +194,12 @@ export function ProfilePage() {
     setModalType(type)
     setLoadingModal(true)
     try {
-      const response = await api.get<Profile[]>(`profiles/${profile.username}/${type}/`)
-      const data = Array.isArray(response.data) ? response.data : (response.data as any).results || []
+      const response = await api.get<Profile[]>(
+        `profiles/${profile.username}/${type}/`,
+      )
+      const data = Array.isArray(response.data)
+        ? response.data
+        : (response.data as any).results || []
       setModalUsers(data)
     } catch (error) {
       console.error(`Erro ao carregar ${type}:`, error)
@@ -195,7 +210,9 @@ export function ProfilePage() {
   }
 
   const handleUpdateTit = (updatedTit: Tit) => {
-    setUserTits((prev) => prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)))
+    setUserTits((prev) =>
+      prev.map((p) => (p.id === updatedTit.id ? updatedTit : p)),
+    )
   }
 
   if (loading) {
@@ -210,12 +227,12 @@ export function ProfilePage() {
   }
 
   const isOwnProfile = currentUser?.username === profile?.username
-  
+
   // Validação cruzando com a lista real de following obtida da API
   const isFollowing = myFollowingIds.some(
     (idOrUser) =>
       String(idOrUser) === String(profile?.id) ||
-      String(idOrUser) === String(profile?.username)
+      String(idOrUser) === String(profile?.username),
   )
 
   return (

@@ -136,7 +136,8 @@ export const LikeButton = styled.button<LikeButtonProps>`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : theme.colors.textSecondary)};
+  color: ${({ theme, $isLiked }) =>
+    $isLiked ? theme.colors.like : theme.colors.textSecondary};
   cursor: pointer;
   font-size: 0.85rem;
   transition: color 0.2s;
@@ -144,7 +145,8 @@ export const LikeButton = styled.button<LikeButtonProps>`
   svg {
     width: 18px;
     height: 18px;
-    fill: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'currentColor')};
+    fill: ${({ theme, $isLiked }) =>
+      $isLiked ? theme.colors.like : 'currentColor'};
   }
 
   &:hover {

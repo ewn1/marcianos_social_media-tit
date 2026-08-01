@@ -83,7 +83,9 @@ export const UserCard = styled.div`
   border-radius: 20px;
   padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
   gap: 0.75k;
 
   @media (max-width: 480px) {
@@ -173,9 +175,13 @@ export const UserNames = styled.div`
 `
 
 export const FollowButton = styled.button<{ $isFollowing?: boolean }>`
-  background-color: ${({ theme, $isFollowing }) => ($isFollowing ? 'transparent' : theme.colors.text)};
-  color: ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.text : theme.colors.background)};
-  border: 1px solid ${({ theme, $isFollowing }) => ($isFollowing ? theme.colors.border : 'transparent')};
+  background-color: ${({ theme, $isFollowing }) =>
+    $isFollowing ? 'transparent' : theme.colors.text};
+  color: ${({ theme, $isFollowing }) =>
+    $isFollowing ? theme.colors.text : theme.colors.background};
+  border: 1px solid
+    ${({ theme, $isFollowing }) =>
+      $isFollowing ? theme.colors.border : 'transparent'};
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   font-weight: 700;

@@ -134,7 +134,9 @@ export const PostCard = styled.div`
   padding: 1.25rem;
   margin-bottom: 1rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 
   @media (max-width: 480px) {
     padding: 0.85rem;
@@ -241,7 +243,8 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
-  color: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : theme.colors.textSecondary)};
+  color: ${({ theme, $isLiked }) =>
+    $isLiked ? theme.colors.like : theme.colors.textSecondary};
   font-size: 0.85rem;
   transition: color 0.2s;
 
@@ -249,7 +252,8 @@ export const LikeButton = styled.button<{ $isLiked?: boolean }>`
     width: 18px;
     height: 18px;
     fill: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'none')};
-    stroke: ${({ theme, $isLiked }) => ($isLiked ? theme.colors.like : 'currentColor')};
+    stroke: ${({ theme, $isLiked }) =>
+      $isLiked ? theme.colors.like : 'currentColor'};
     stroke-width: 2;
   }
 

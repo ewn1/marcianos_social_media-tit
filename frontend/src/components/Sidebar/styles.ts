@@ -73,7 +73,8 @@ export const NavItem = styled.div<{ $active?: boolean }>`
   gap: 16px;
   padding: 12px 16px;
   border-radius: 9999px;
-  color: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.text)};
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.text};
   font-size: 18px;
   font-weight: ${({ $active }) => ($active ? '700' : '500')};
   cursor: pointer;
