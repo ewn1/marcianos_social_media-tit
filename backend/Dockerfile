@@ -34,5 +34,5 @@ COPY . .
 ### porta do Django
 EXPOSE 8000
 
-### Comando para rodar a aplicação conectado na nuvem
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+### Comando para rodar a aplicação em produção conectado na nuvem
+CMD ["gunicorn", "setup.wsgi:application", "--bind", "0.0.0.0:8000"]
